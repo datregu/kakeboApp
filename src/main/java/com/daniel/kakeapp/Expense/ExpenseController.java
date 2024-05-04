@@ -39,4 +39,25 @@ public List<ExpenseEntity> listExpenses() {
 public void deleteExpense(@PathVariable Integer expenseId) {
     expenseService.deleteExpense(expenseId);
 }
+
+
+
+    /* Método para buscar por categoria
+    * Como este método no viene incluuido de serie en expenseRepo, se debe crear un método en el repositorio
+    * Para llamar a este método, se debe hacer una petición GET a /expense/listByCategory?category=CATEGORY
+    *  */
+    @GetMapping("/listByCategory")
+@ResponseBody
+public List<ExpenseEntity> listExpensesByCategory(@RequestParam ExpenseCategory category) {
+    return expenseService.findExpensesByCategory(category);
+}
+
+
+// Método para buscar por mes
+    // Para llamar a este método, se debe hacer una petición GET a /expense/listByMonth?month=MONTH
+    @GetMapping("/listByMonth")
+@ResponseBody
+public List<ExpenseEntity> listExpensesByMonth(@RequestParam int month) {
+    return expenseService.findExpensesByMonth(month);
+}
 }

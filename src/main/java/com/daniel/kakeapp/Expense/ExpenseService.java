@@ -39,6 +39,17 @@ public void deleteExpense(Integer expenseId) {
     }
 }
 
+    /* Método para buscar por categoria
+    * Como este método no viene incluuido de serie en expenseRepo, se debe crear un método en el repositorio
+    *  */
+public List<ExpenseEntity> findExpensesByCategory(ExpenseCategory category) {
+    // Assuming you have an ExpenseRepository with a method findByExpenseCategory
+    return expenseRepo.findByExpenseCategory(category);
+}
 
 
+// Método para buscar por mes
+public List<ExpenseEntity> findExpensesByMonth(int month) {
+    return expenseRepo.findByExpenseMonth(month);
+}
 }
