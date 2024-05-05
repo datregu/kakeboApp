@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class UserController {
 
     // Crear usuario
     @PostMapping("/createUser")
-    public void createUser(@RequestBody  UserEntity userEntity) {
-        userService.createUser(userEntity);
+    public void createUser(@RequestBody UserEntity userEntity) {
+        userService.createUser(userEntity, userEntity.getFamilyMembers());
     }
 }

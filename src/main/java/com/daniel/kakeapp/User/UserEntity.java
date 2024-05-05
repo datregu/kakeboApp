@@ -32,4 +32,6 @@ public class UserEntity {
     private List<ExpenseEntity> expenses;
 
     //TODO: Añadir campo familiares con un ENUM
+    @ElementCollection
+    private List<String> familyMembers;
 }
