@@ -18,9 +18,9 @@ public class ExpenseController {
         this.expenseService = expenseService;
     }
 
-    @PostMapping("/createExpense")
-    public void createExpense(@RequestBody ExpenseEntity expenseEntity) {
-        expenseService.createExpense(expenseEntity);
+    @PostMapping("/createExpense/{expenseUserId}")
+    public void createExpense(@PathVariable Integer expenseUserId, @RequestBody ExpenseEntity expenseEntity) {
+        expenseService.createExpense(expenseEntity, expenseUserId);
     }
 
     @PutMapping("/update/{expenseId}")

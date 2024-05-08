@@ -1,6 +1,8 @@
 package com.daniel.kakeapp.Expense;
 
 
+import com.daniel.kakeapp.User.UserEntity;
+import com.daniel.kakeapp.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +12,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExpenseService {
 
+    private final UserRepository userRepo;
     private final ExpenseRepository expenseRepo;
 
     /* Método para crear un gasto en la base de datos */
-    public void createExpense(ExpenseEntity expenseEntity) {
+    public void createExpense(ExpenseEntity expenseEntity, Integer expenseUserId) {
+        UserEntity userEntity = userRepo.findById(expenseUserId)
+                                        .orElseThrow(() -> new IllegalArgumentException("No se encuentra el usuario con el ID proporcionado"));
+        expenseEntity.setUser(userEntity);
         expenseRepo.save(expenseEntity);
     }
 
