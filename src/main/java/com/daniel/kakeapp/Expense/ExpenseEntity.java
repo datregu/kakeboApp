@@ -2,7 +2,7 @@ package com.daniel.kakeapp.Expense;
 
 
 import com.daniel.kakeapp.User.UserEntity;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,8 +14,10 @@ import java.time.LocalDate;
 
 @Data
 @Entity
+@Table(name = "expenses")
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class ExpenseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,8 +39,9 @@ public class ExpenseEntity {
     @Enumerated(EnumType.STRING)
     private ExpenseCategory expenseCategory;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+ @ManyToOne
+    @JoinColumn(name = "id_user_expense", referencedColumnName = "user_id")
+ @JsonBackReference
     private UserEntity user;
     // TODO: ADD FAMILY MEMBER AUTHOR,
 

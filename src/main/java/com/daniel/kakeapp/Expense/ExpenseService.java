@@ -1,6 +1,7 @@
 package com.daniel.kakeapp.Expense;
 
-
+import com.daniel.kakeapp.User.UserRepository;
+import com.daniel.kakeapp.User.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class ExpenseService {
 
     private final ExpenseRepository expenseRepo;
-
+    private final UserRepository userRepo;
     /* Método para crear un gasto en la base de datos */
     public void createExpense(ExpenseEntity expenseEntity) {
         expenseRepo.save(expenseEntity);
