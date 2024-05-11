@@ -19,7 +19,7 @@ public class ExpenseController {
 
     @PostMapping("/createExpense/{userId}")
     public void createExpense(@PathVariable  Integer userId, @RequestBody ExpenseEntity expenseEntity) {
-        expenseService.createExpense(expenseEntity, userId);
+        expenseService.createExpense(expenseEntity, userId  );
     }
 
     @PutMapping("/update/{expenseId}")
@@ -27,7 +27,7 @@ public class ExpenseController {
         expenseService.updateExpense(expenseId, expenseEntity);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/expenseList")
     @ResponseBody
     public List<ExpenseEntity> listExpenses() {
 
@@ -62,7 +62,7 @@ public class ExpenseController {
 
     // Método para devolver el total de gastos de un mes
     // Para llamar a este método, se debe hacer una petición GET a /expense/totalByMonth?month=MONTH
-    @GetMapping("/totalByMonth")
+    @GetMapping("/totalExpenseByMonth")
     @ResponseBody
     public Double totalExpensesByMonth(@RequestParam int month) {
         return expenseService.findTotalExpensesByMonth(month);
