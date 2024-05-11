@@ -14,9 +14,12 @@ public class ExpenseService {
     private final ExpenseRepository expenseRepo;
     private final UserRepository userRepo;
     /* Método para crear un gasto en la base de datos */
-    public void createExpense(ExpenseEntity expenseEntity) {
-        expenseRepo.save(expenseEntity);
-    }
+public void createExpense(ExpenseEntity expenseEntity, Integer userId) {
+    UserEntity user = userRepo.findById(userId)
+            .orElseThrow(() -> new IllegalArgumentException("No se encuentra el usuario con el ID proporcionado"));
+    expenseEntity.setUser(user);
+    expenseRepo.save(expenseEntity);
+}
 
     /* Método para actualizar un gasto en la base de datos por su ID */
     public void updateExpense(Integer expenseId, ExpenseEntity expenseEntity) {

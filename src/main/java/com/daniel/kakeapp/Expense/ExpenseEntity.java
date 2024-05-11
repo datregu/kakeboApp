@@ -41,7 +41,8 @@ public class ExpenseEntity {
 
  @ManyToOne
     @JoinColumn(name = "id_user_expense", referencedColumnName = "user_id")
- @JsonBackReference
+ @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
+ @JsonIdentityReference(alwaysAsId = true)
     private UserEntity user;
     // TODO: ADD FAMILY MEMBER AUTHOR,
 
