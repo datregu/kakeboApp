@@ -45,7 +45,6 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private List<IncomeEntity> incomes;
 
-    //TODO: Añadir campo familiares con un ENUM
     @ElementCollection
     private List<String> familyMembers;
 }
