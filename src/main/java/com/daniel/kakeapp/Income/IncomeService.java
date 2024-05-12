@@ -5,6 +5,7 @@ import com.daniel.kakeapp.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -51,7 +52,7 @@ public class IncomeService {
     }
 
     // Método para buscar el total de ingresos de un mes
-    public Double findTotalIncomesByMonth(int month) {
+    public BigDecimal findTotalIncomesByMonth(int month) {
         return incomeRepo.findTotalIncomesByMonth(month);
     }
 }

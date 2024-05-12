@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -18,6 +19,6 @@ List<ExpenseEntity> findByExpenseMonth(@Param("month") int month);
 
     // Método para que devuelva el total de gastos de un mes
     @Query("SELECT SUM(e.expenseAmount) FROM ExpenseEntity e WHERE MONTH(e.expenseDate) = :month")
-    Double findTotalExpensesByMonth(@Param("month") int month);
+    BigDecimal findTotalExpensesByMonth(@Param("month") int month);
 
 }

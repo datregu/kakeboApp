@@ -5,6 +5,7 @@ import com.daniel.kakeapp.User.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -60,7 +61,7 @@ public class ExpenseService {
     }
 
     // Método para buscar el total de gastos de un mes
-    public Double findTotalExpensesByMonth(int month) {
+    public BigDecimal findTotalExpensesByMonth(int month) {
         return expenseRepo.findTotalExpensesByMonth(month);
     }
 }

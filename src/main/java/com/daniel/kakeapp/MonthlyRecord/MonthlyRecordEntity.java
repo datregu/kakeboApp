@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Table(name="monthly_records")
@@ -21,22 +23,22 @@ public class MonthlyRecordEntity {
     private Integer m_r_Id;
 
     @Column
-    private Integer m_r_Year;
+    private Integer year;
 
     @Column
-    private Integer m_r_Month;
+    private Integer month;
 
     @Column
-    private Integer m_r_TotalIncome;
+    private BigDecimal total_income;
 
     @Column
-    private Integer m_r_TotalExpense;
+    private BigDecimal total_expense;
 
     @Column
-    private Integer m_r_DesiredSavings;
+    private BigDecimal desired_savings;
 
     @Column
-    private Integer m_r_RealSavings;
+    private BigDecimal real_savings;
 
 
     @ManyToOne

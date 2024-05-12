@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -64,7 +65,7 @@ public class ExpenseController {
     // Para llamar a este método, se debe hacer una petición GET a /expense/totalByMonth?month=MONTH
     @GetMapping("/totalExpenseByMonth")
     @ResponseBody
-    public Double totalExpensesByMonth(@RequestParam int month) {
+    public BigDecimal totalExpensesByMonth(@RequestParam int month) {
         return expenseService.findTotalExpensesByMonth(month);
     }
 }

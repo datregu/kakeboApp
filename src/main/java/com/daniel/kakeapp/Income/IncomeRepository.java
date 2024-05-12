@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -16,5 +17,5 @@ public interface IncomeRepository extends JpaRepository<IncomeEntity, Integer>{
 
     //Método para que devuelva el total de ingresos de un mes
     @Query ("SELECT SUM(i.incomeAmount) FROM IncomeEntity i WHERE MONTH(i.incomeDate) = :month")
-    Double findTotalIncomesByMonth(@Param("month") int month);
+    BigDecimal findTotalIncomesByMonth(@Param("month") int month);
 }
