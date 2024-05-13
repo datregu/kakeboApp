@@ -51,17 +51,32 @@ public class ExpenseService {
      * Como este método no viene incluido de serie en expenseRepo, se debe crear un método en el repositorio
      *  */
     public List<ExpenseEntity> findExpensesByCategory(ExpenseCategory category) {
-        return expenseRepo.findByExpenseCategory(category);
+        List<ExpenseEntity> resultByCategory = expenseRepo.findByExpenseCategory(category);
+        if (resultByCategory.isEmpty()) {
+            throw new IllegalArgumentException("No se encuentran gastos para la categoría proporcionada");
+        } else {
+            return resultByCategory;
+        }
     }
 
 
     // Método para buscar por mes, se le pasa el mes como parámetro
     public List<ExpenseEntity> findExpensesByMonth(int month) {
-        return expenseRepo.findByExpenseMonth(month);
+        List<ExpenseEntity> resultByMonth = expenseRepo.findByExpenseMonth(month);
+        if (resultByMonth.isEmpty()) {
+            throw new IllegalArgumentException("No se encuentran gastos para el mes proporcionado");
+        } else {
+            return resultByMonth;
+        }
     }
 
     // Método para buscar el total de gastos de un mes
     public BigDecimal findTotalExpensesByMonth(int month) {
-        return expenseRepo.findTotalExpensesByMonth(month);
+        BigDecimal resultTotalExpenses = expenseRepo.findTotalExpensesByMonth(month);
+        if (resultTotalExpenses == null) {
+            throw new IllegalArgumentException("No se encuentran gastos para el mes proporcionado");
+        } else {
+            return resultTotalExpenses;
+        }
     }
 }

@@ -25,7 +25,8 @@ public class ExpenseEntity {
 
     @Column
     private BigDecimal expenseAmount;
-    //TODO: ADD PARSING TO DATE
+
+
     //Por defecto, cuando se quiera pasar una fecha a través de un JSON, se puede hacer en formato "dd-MM-yyyy"
     @Column
     @DateTimeFormat(pattern = "dd-MM-yyyy")
@@ -44,7 +45,7 @@ public class ExpenseEntity {
  @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
  @JsonIdentityReference(alwaysAsId = true)
     private UserEntity user;
-    // TODO: ADD FAMILY MEMBER AUTHOR,
+
 
 }
 
