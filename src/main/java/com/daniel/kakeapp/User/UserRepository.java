@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     //Añadir métodos personalizados
+    UserEntity findByUserEmailAndUserPassword(String userEmail, String userPassword);
 }

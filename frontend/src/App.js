@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import App from './App';
-import Dashboard  from "./components/Dashboard";
+import Dashboard  from "./pages/Dashboard/Dashboard";
 
 function Main() {
   return (
