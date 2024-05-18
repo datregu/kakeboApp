@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from '@mui/material';
 import Pagination from "@mui/material/Pagination";
-import styles from './ExpenseTable.css';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
@@ -51,19 +50,19 @@ function handleDeleteExpense(expenseId) {
                 <TableHead className="table-head">
                     <TableRow>
                         <TableCell
-                        sx={{color: 'white', fontSize: '1.5rem'}}
-                        >Categoria</TableCell>
+                            sx={{color: 'white', fontSize: '1.5rem', backgroundColor: '#073b4c'}}
+                        >Categoría</TableCell>
                         <TableCell
-                            sx={{color: 'white', fontSize: '1.5rem'}}
+                            sx={{color: 'white', fontSize: '1.5rem', backgroundColor: '#073b4c'}}
                         >Descripción</TableCell>
                         <TableCell
-                            sx={{color: 'white', fontSize: '1.5rem'}}
+                            sx={{color: 'white', fontSize: '1.5rem', backgroundColor: '#073b4c'}}
                         >Fecha</TableCell>
                         <TableCell
-                            sx={{color: 'white', fontSize: '1.5rem'}}
+                            sx={{color: 'white', fontSize: '1.5rem', backgroundColor: '#073b4c'}}
                         >Cantidad</TableCell>
                         <TableCell
-                            sx={{color: 'white', fontSize: '1.5rem'}}
+                            sx={{color: 'white', fontSize: '1.5rem', backgroundColor: '#073b4c'}}
                         >Acciones</TableCell>
                     </TableRow>
                 </TableHead>

@@ -1,12 +1,16 @@
 .containerDashboard {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-padding-top: 2rem;
     justify-content: center;
-    height: 100vh;
-    //border: 1px solid red; /* Solo para visualizar el contenedor */
+    border: 3px solid red; /* Solo para visualizar el contenedor */
+
 }
-.containerDashboard > * {
-    max-width: 90%; /* Ajusta este valor según tus necesidades */
+.expenseTableContainer{
+    width: 100%;
+    border: 1px solid red; /* Solo para visualizar el contenedor */
+    padding: 1rem;
+    height: 100%;
+}
+.addExpenseButtonContainer{
+    width: 40%;
+    border: 1px solid red; /* Solo para visualizar el contenedor */
 }
