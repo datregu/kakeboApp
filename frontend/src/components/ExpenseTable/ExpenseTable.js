@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from '@mui/material';
 import Pagination from "@mui/material/Pagination";
 import styles from './ExpenseTable.css';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+
 
 function formatCategory(category) {
     return category
@@ -23,6 +26,25 @@ function ExpenseTable({expenses, tableSize}) {
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
+
+function handleDeleteExpense(expenseId) {
+    const userConfirmation = window.confirm('¿Estás seguro de que quieres borrar este gasto?');
+    if (userConfirmation) {
+        fetch(`http://localhost:8080/api/delete/${expenseId}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (!response.ok) {
+                alert('No se ha podido eliminar el gasto')
+            }
+            alert('Gasto eliminado correctamente');
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+    }
+}
+
     return (
         <TableContainer component={Paper} className="expense-table" style={{width: tableSize?.width || '100%', height: tableSize?.height || '100%'}}>
             <Table>
@@ -40,6 +62,9 @@ function ExpenseTable({expenses, tableSize}) {
                         <TableCell
                             sx={{color: 'white', fontSize: '1.5rem'}}
                         >Cantidad</TableCell>
+                        <TableCell
+                            sx={{color: 'white', fontSize: '1.5rem'}}
+                        >Acciones</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -52,6 +77,20 @@ function ExpenseTable({expenses, tableSize}) {
                                 <TableCell style={{backgroundColor: color}}>{expense.expenseDescription}</TableCell>
                                 <TableCell style={{backgroundColor: color}}>{expense.expenseDate}</TableCell>
                                 <TableCell style={{backgroundColor: color, fontSize: '1rem'}}>{expense.expenseAmount} €</TableCell>
+                                <TableCell style={{
+                                    backgroundColor: color,
+                                    display: 'flex',
+                                    justifyContent: 'space-around'
+                                }}>
+                                    <EditOutlinedIcon
+                                        style={{cursor: 'pointer', color:'white'}}
+
+                                    />
+                                    <DeleteOutlineOutlinedIcon
+                                        style={{cursor: 'pointer', color:'white'}}
+                                    onClick={() => handleDeleteExpense(expense.expenseId)}
+                                    />
+                                </TableCell>
                             </TableRow>
                         );
                     })}

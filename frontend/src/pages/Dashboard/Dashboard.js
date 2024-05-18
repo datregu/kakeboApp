@@ -6,13 +6,14 @@ import {styles} from './Dashboard.css'
 
 function Dashboard() {
     const [expenses, setExpenses] = useState([]);
+    const [isExpenseDeleted, setIsExpenseDeleted] = useState(false);
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/expenseList')
+        fetch('http://localhost:8080/api/expenseList/1')
             .then(response => response.json())
             .then(data => setExpenses(data.slice(0, 10))) // Tomamos solo los primeros 10 elementos
             .catch(error => console.error('Error:', error));
-    }, []);
+    }, [isExpenseDeleted]);
 
     return (
         <>
