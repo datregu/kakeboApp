@@ -34,8 +34,10 @@ public class ExpenseService {
     }
 
     /* Método para listar todos los gastos en la base de datos */
-    public List<ExpenseEntity> listExpenses() {
-        return expenseRepo.findAll();
+    public List<ExpenseEntity> listExpenses(Integer userId) {
+        UserEntity user = userRepo.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("No se encuentra el usuario con el ID proporcionado"));
+        return expenseRepo.findByUser(user);
     }
 
     /* Método para eliminar un gasto en la base de datos por su ID */

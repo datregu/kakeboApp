@@ -30,11 +30,10 @@ public class ExpenseController {
         expenseService.updateExpense(expenseId, expenseEntity);
     }
 
-    @GetMapping("/expenseList")
+    @GetMapping("/expenseList/{userId}")
     @ResponseBody
-    public List<ExpenseEntity> listExpenses() {
-
-        return expenseService.listExpenses();
+    public List<ExpenseEntity> listExpenses(@PathVariable Integer userId) {
+        return expenseService.listExpenses(userId);
     }
 
     /* Método para eliminar un gasto en la base de datos por su expenseId */

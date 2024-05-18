@@ -1,4 +1,5 @@
 package com.daniel.kakeapp.Expense;
+import com.daniel.kakeapp.User.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +22,6 @@ List<ExpenseEntity> findByExpenseMonth(@Param("month") int month);
     @Query("SELECT SUM(e.expenseAmount) FROM ExpenseEntity e WHERE MONTH(e.expenseDate) = :month")
     BigDecimal findTotalExpensesByMonth(@Param("month") int month);
 
+    // Método para buscar gastos por usuario
+    List<ExpenseEntity> findByUser(UserEntity user);
 }
