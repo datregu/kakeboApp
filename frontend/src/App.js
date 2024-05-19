@@ -1,18 +1,23 @@
-// src/App.js
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import App from './App';
-import Dashboard  from "./pages/Dashboard/Dashboard";
+import React, { useState } from 'react';
 
-function Main() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/app" element={<App />} />
-        <Route path="/" element={<Dashboard />} />
-      </Routes>
-    </Router>
-  );
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Login from './pages/Login/Login';
+import Dashboard from './pages/Dashboard/Dashboard';
+import UserContext from './components/UserContext/UserContext';
+function App() {
+    const [user, setUser] = useState(null);
+
+    return (
+        <UserContext.Provider value={{ user, setUser }}>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<Login />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    {/* otras rutas aquí */}
+                </Routes>
+            </Router>
+        </UserContext.Provider>
+    );
 }
 
-export default Main;
+export default App;

@@ -80,7 +80,7 @@ function ExpenseTable({expenses, tableSize, userId, setIsExpenseUpdated}) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {expenses.slice((page - 1) * rowsPerPage, page * rowsPerPage).map(expense => {
+                    {Array.isArray(expenses) && expenses.slice((page - 1) * rowsPerPage, page * rowsPerPage).map(expense => {
                         const category = formatCategory(expense.expenseCategory);
                         const color = categoryColors[category];
                         return (

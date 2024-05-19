@@ -17,12 +17,12 @@ public class UserService {
             userEntity.setFamilyMembers(familyMembers);
             userRepo.save(userEntity);
     }
-    public ResponseEntity<?> loginUser(UserEntity user) {
-        UserEntity existingUser = userRepo.findByUserEmailAndUserPassword(user.getUserEmail(), user.getUserPassword());
-        if (existingUser != null) {
-            return ResponseEntity.ok("User logged in successfully");
-        } else {
-            return ResponseEntity.badRequest().body("Invalid username or password");
-        }
+   public ResponseEntity<?> loginUser(UserEntity user) {
+    UserEntity existingUser = userRepo.findByUserEmailAndUserPassword(user.getUserEmail(), user.getUserPassword());
+    if (existingUser != null) {
+        return ResponseEntity.ok(existingUser);
+    } else {
+        return ResponseEntity.badRequest().body("Invalid username or password");
     }
+}
 }

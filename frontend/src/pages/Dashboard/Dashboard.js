@@ -1,8 +1,10 @@
-import React, {useEffect, useState} from 'react';
+// src/pages/Dashboard/Dashboard.js
+
+import React, {useEffect, useState, useContext} from 'react';
 import ExpenseTable from '../../components/ExpenseTable/ExpenseTable';
 import Header from '../../components/Header/Header'
 import style from  './Dashboard.css';
-
+import UserContext from "../../components/UserContext/UserContext";
 import {Box} from "@mui/material";
 import AddExpense from "../AddExpense/AddExpense";
 
@@ -11,14 +13,27 @@ function Dashboard() {
     const [isExpenseCreated, setIsExpenseCreated] = useState(false);
     const [isExpenseUpdated, setIsExpenseUpdated] = useState(false);
 
-    const userId = 1;
+    const {user, setUser} = useContext(UserContext);
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/expenseList/1')
-            .then(response => response.json())
-            .then(data => setExpenses(data)) // Tomamos solo los primeros 10 elementos
-            .catch(error => console.error('Error:', error));
-    }, [isExpenseCreated, isExpenseUpdated]);
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        if (storedUser) {
+            setUser(storedUser);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (user) {
+            fetch(`http://localhost:8080/api/expenseList/${user.userId}`)
+                .then(response => response.json())
+                .then(data => setExpenses(data))
+                .catch(error => console.error('Error:', error));
+        }
+    }, [isExpenseCreated, isExpenseUpdated, user]);
+
+    if (!user) {
+        return <div>Usuario no detectado</div>; // Or your loading spinner
+    }
 
     return (
         <>
@@ -26,14 +41,14 @@ function Dashboard() {
             <Box className="containerDashboard">
                 <Box className="expenseTableContainer">
                     <ExpenseTable expenses={expenses}
-                                  userId={userId}
+                                  userId={user.userId}
                                   setIsExpenseUpdated={setIsExpenseUpdated}
                     />
                 </Box>
 
                 <Box className="addExpenseButtonContainer">
                     <AddExpense
-                        userId={1}
+                        userId={user.userId}
                         setIsExpenseCreated={setIsExpenseCreated}/>
                 </Box>
 
