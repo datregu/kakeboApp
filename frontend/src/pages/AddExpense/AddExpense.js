@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {TextField, Snackbar, MenuItem, Select, Box} from '@mui/material';
 import style from './AddExpense.css';
 
-function AddExpense({userId, setIsExpenseDeleted}) {
+function AddExpense({userId, setIsExpenseCreated}) {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [expenseData, setExpenseData] = useState({
         expenseAmount: '',
@@ -50,7 +50,7 @@ function AddExpense({userId, setIsExpenseDeleted}) {
             .then(response => {
                 if (response.ok) {
                     alert('Gasto añadido correctamente');
-                    setIsExpenseDeleted(prevState => !prevState);
+                    setIsExpenseCreated(prevState => !prevState);
                     return response.text().then(text => {
                         return text ? JSON.parse(text) : {}
                     })

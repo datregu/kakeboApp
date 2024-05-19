@@ -8,7 +8,7 @@ import AddExpense from "../AddExpense/AddExpense";
 
 function Dashboard() {
     const [expenses, setExpenses] = useState([]);
-    const [isExpenseDeleted, setIsExpenseDeleted] = useState(false);
+    const [isExpenseCreated, setIsExpenseCreated] = useState(false);
     const userId = 1;
 
     useEffect(() => {
@@ -16,7 +16,7 @@ function Dashboard() {
             .then(response => response.json())
             .then(data => setExpenses(data)) // Tomamos solo los primeros 10 elementos
             .catch(error => console.error('Error:', error));
-    }, [isExpenseDeleted]);
+    }, [isExpenseCreated]);
 
     return (
         <>
@@ -27,7 +27,7 @@ function Dashboard() {
                 </Box>
 
                 <Box className="addExpenseButtonContainer">
-                    <AddExpense userId={1} setIsExpenseDeleted={setIsExpenseDeleted}/>
+                    <AddExpense userId={1} setIsExpenseCreated={setIsExpenseCreated}/>
                 </Box>
 
             </Box>
