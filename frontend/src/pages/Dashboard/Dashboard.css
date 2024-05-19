@@ -1,16 +1,17 @@
 .containerDashboard {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     border: 3px solid red; /* Solo para visualizar el contenedor */
-
 }
+
 .expenseTableContainer{
-    width: 100%;
+    width: 70%; /* Limita el ancho de la tabla de gastos */
     border: 1px solid red; /* Solo para visualizar el contenedor */
     padding: 1rem;
     height: 100%;
 }
+
 .addExpenseButtonContainer{
-    width: 40%;
+    width: 40%; /* Limita el ancho del componente AddExpense */
     border: 1px solid red; /* Solo para visualizar el contenedor */
 }

@@ -1,15 +1,18 @@
 import React, {useState} from 'react';
 import {TextField, Snackbar, MenuItem, Select, Box} from '@mui/material';
-import style from './AddExpense.css';
 
 function AddExpense({userId, setIsExpenseCreated}) {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [expenseData, setExpenseData] = useState({
+
+    const initialExpenseData = {
         expenseAmount: '',
         expenseDate: new Date(),
         expenseDescription: '',
         expenseCategory: ''
-    });
+    };
+    const [expenseData, setExpenseData] = useState(initialExpenseData);
+
+
     const categories = [
         {value: 'CULTURA', label: 'Cultura'},
         {value: 'OCIO_Y_VICIO', label: 'Ocio y Vicio'},
@@ -49,8 +52,9 @@ function AddExpense({userId, setIsExpenseCreated}) {
         })
             .then(response => {
                 if (response.ok) {
-                    alert('Gasto añadido correctamente');
+                   // alert('Gasto añadido correctamente');
                     setIsExpenseCreated(prevState => !prevState);
+                    setExpenseData(initialExpenseData);
                     return response.text().then(text => {
                         return text ? JSON.parse(text) : {}
                     })
