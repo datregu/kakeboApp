@@ -21,7 +21,7 @@ const categoryColors = {
 
 function ExpenseTable({expenses, tableSize}) {
     const [page, setPage] = useState(1);
-    const rowsPerPage = 10;
+    const rowsPerPage = 5;
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };

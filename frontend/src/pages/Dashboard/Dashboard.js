@@ -14,7 +14,7 @@ function Dashboard() {
     useEffect(() => {
         fetch('http://localhost:8080/api/expenseList/1')
             .then(response => response.json())
-            .then(data => setExpenses(data.slice(0, 10))) // Tomamos solo los primeros 10 elementos
+            .then(data => setExpenses(data)) // Tomamos solo los primeros 10 elementos
             .catch(error => console.error('Error:', error));
     }, [isExpenseDeleted]);
 
@@ -27,7 +27,7 @@ function Dashboard() {
                 </Box>
 
                 <Box className="addExpenseButtonContainer">
-                    <AddExpense userId={1}/>
+                    <AddExpense userId={1} setIsExpenseDeleted={setIsExpenseDeleted}/>
                 </Box>
 
             </Box>
