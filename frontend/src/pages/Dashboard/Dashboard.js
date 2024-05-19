@@ -48,7 +48,7 @@ function Dashboard() {
                     />
                 </Box>
 
-                <Box className="addExpenseButtonContainer">
+                <Box className="buttonsContainer">
                     <AddExpense
                         userId={user.userId}
                         setIsExpenseCreated={setIsExpenseCreated}/>
