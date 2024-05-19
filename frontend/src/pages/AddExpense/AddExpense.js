@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {TextField, Snackbar, MenuItem, Select, Box} from '@mui/material';
+import {TextField, Snackbar, MenuItem, Select, Box, InputLabel, Fab} from '@mui/material';
 
 function AddExpense({userId, setIsExpenseCreated}) {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -14,10 +14,10 @@ function AddExpense({userId, setIsExpenseCreated}) {
 
 
     const categories = [
-        {value: 'CULTURA', label: 'Cultura'},
-        {value: 'OCIO_Y_VICIO', label: 'Ocio y Vicio'},
-        {value: 'EXTRAS', label: 'Extras   '},
         {value: 'SUPERVIVENCIA', label: 'Supervivencia'},
+        {value: 'OCIO_Y_VICIO', label: 'Ocio y Vicio'},
+        {value: 'CULTURA', label: 'Cultura'},
+        {value: 'EXTRAS', label: 'Extras   '},
     ];
 
     const handleSnackbarClose = (event, reason) => {
@@ -101,21 +101,29 @@ function AddExpense({userId, setIsExpenseCreated}) {
             <TextField name="expenseDescription" label="Descripción" value={expenseData.expenseDescription}
                        onChange={handleChange}/>
 
-            <Select
+            <TextField
                 value={expenseData.expenseCategory}
                 onChange={handleChange}
                 name="expenseCategory"
+                select
+                label="Categoría"
             >
                 {categories.map((category) => (
                     <MenuItem key={category.value} value={category.value}>
                         {category.label}
                     </MenuItem>
                 ))}
-            </Select>
+            </TextField>
 
-            <button type="button" onClick={createExpense}>
-                Crear
-            </button>
+
+            <Fab
+                size="small"
+                color="primary"
+                variant="extended"
+                onClick={createExpense}>
+                Añadir gasto
+            </Fab>
+
 
             <Snackbar
                 open={snackbarOpen}

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from '@mui/material';
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Snackbar} from '@mui/material';
 import Pagination from "@mui/material/Pagination";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -26,7 +26,13 @@ function ExpenseTable({expenses, tableSize, userId, setIsExpenseUpdated, setIsEx
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
-
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbarOpen(false);
+    };
     function handleDeleteExpense(expenseId) {
         const userConfirmation = window.confirm('¿Estás seguro de que quieres borrar este gasto?');
         if (userConfirmation) {
@@ -38,7 +44,8 @@ function ExpenseTable({expenses, tableSize, userId, setIsExpenseUpdated, setIsEx
                         alert('No se ha podido eliminar el gasto')
                     }
                     setIsExpenseDeleted(prevState => !prevState);
-                    alert('Gasto eliminado correctamente');
+                    //Abrir snackbar de eliminación
+                    setSnackbarOpen(true);
                 })
                 .catch(error => {
                     console.error('There has been a problem with your fetch operation:', error);
@@ -121,6 +128,12 @@ function ExpenseTable({expenses, tableSize, userId, setIsExpenseUpdated, setIsEx
                 </TableBody>
             </Table>
             <Pagination count={Math.ceil(expenses.length / rowsPerPage)} page={page} onChange={handleChangePage}/>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+                message="Se ha eliminado el gasto"
+            />
         </TableContainer>
     );
 }
