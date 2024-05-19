@@ -35,6 +35,7 @@ function AddExpense({userId, setIsExpenseCreated}) {
     };
 
     const createExpense = () => {
+        const userConfirmation = window.confirm('¿Estás seguro de que quieres crear este gasto?');
         const expenseDataToSend = {
             ...expenseData,
             expenseDate: expenseData.expenseDate.toLocaleDateString('es-ES', {
@@ -51,8 +52,7 @@ function AddExpense({userId, setIsExpenseCreated}) {
             body: JSON.stringify(expenseDataToSend),
         })
             .then(response => {
-                if (response.ok) {
-                   // alert('Gasto añadido correctamente');
+                if (userConfirmation) {
                     setIsExpenseCreated(prevState => !prevState);
                     setExpenseData(initialExpenseData);
                     return response.text().then(text => {

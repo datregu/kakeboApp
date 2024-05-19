@@ -12,6 +12,7 @@ function Dashboard() {
     const [expenses, setExpenses] = useState([]);
     const [isExpenseCreated, setIsExpenseCreated] = useState(false);
     const [isExpenseUpdated, setIsExpenseUpdated] = useState(false);
+    const [isExpenseDeleted, setIsExpenseDeleted] = useState(false);
 
     const {user, setUser} = useContext(UserContext);
 
@@ -29,7 +30,7 @@ function Dashboard() {
                 .then(data => setExpenses(data))
                 .catch(error => console.error('Error:', error));
         }
-    }, [isExpenseCreated, isExpenseUpdated, user]);
+    }, [isExpenseCreated, isExpenseUpdated, isExpenseDeleted,user]);
 
     if (!user) {
         return <div>Usuario no detectado</div>; // Or your loading spinner
@@ -43,6 +44,7 @@ function Dashboard() {
                     <ExpenseTable expenses={expenses}
                                   userId={user.userId}
                                   setIsExpenseUpdated={setIsExpenseUpdated}
+                                  setIsExpenseDeleted={setIsExpenseDeleted}
                     />
                 </Box>
 

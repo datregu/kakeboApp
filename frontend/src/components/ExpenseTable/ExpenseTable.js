@@ -20,7 +20,7 @@ const categoryColors = {
     'Extras': '#ef476f'
 };
 
-function ExpenseTable({expenses, tableSize, userId, setIsExpenseUpdated}) {
+function ExpenseTable({expenses, tableSize, userId, setIsExpenseUpdated, setIsExpenseDeleted}) {
     const [page, setPage] = useState(1);
     const rowsPerPage = 5;
     const handleChangePage = (event, newPage) => {
@@ -37,6 +37,7 @@ function ExpenseTable({expenses, tableSize, userId, setIsExpenseUpdated}) {
                     if (!response.ok) {
                         alert('No se ha podido eliminar el gasto')
                     }
+                    setIsExpenseDeleted(prevState => !prevState);
                     alert('Gasto eliminado correctamente');
                 })
                 .catch(error => {
