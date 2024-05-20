@@ -25,16 +25,19 @@ public class IncomeController {
         incomeService.createIncome(incomeEntity, userId);
     }
 
-    @GetMapping("/incomeList")
+    @GetMapping("/incomeListByMonth/{userId}")
     @ResponseBody
-    public List<IncomeEntity> listIncomes() {
-
-        return incomeService.listIncomes();
+    public List<IncomeEntity> incomeListByMonth(@PathVariable Integer userId) {
+        return incomeService.findIncomesByMonth(userId);
     }
 
 @GetMapping("/totalIncomeByMonth")
     @ResponseBody
     public BigDecimal totalIncomeByMonth(@RequestParam int month) {
         return incomeService.findTotalIncomesByMonth(month);
+    }
+    @DeleteMapping("/deleteIncome/{incomeId}")
+    public void deleteIncome(@PathVariable Integer incomeId) {
+        incomeService.deleteIncome(incomeId);
     }
 }

@@ -7,10 +7,12 @@
 }
 
 .expenseTableContainer{
-    width: 70%; /* Limita el ancho de la tabla de gastos */
+   display: flex;
+    width: 100%; /* Limita el ancho de la tabla de gastos */
     border: 1px solid red; /* Solo para visualizar el contenedor */
-    padding: 1rem;
     height: 100%;
+    gap: 1rem;
+    justify-content: center;
 }
 
 .buttonsContainer{

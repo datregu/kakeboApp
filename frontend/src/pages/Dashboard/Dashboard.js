@@ -7,12 +7,16 @@ import style from  './Dashboard.css';
 import UserContext from "../../components/UserContext/UserContext";
 import {Box} from "@mui/material";
 import AddExpense from "../AddExpense/AddExpense";
+import IncomeTable from "../../components/IncomeTable/IncomeTable";
 
 function Dashboard() {
     const [expenses, setExpenses] = useState([]);
     const [isExpenseCreated, setIsExpenseCreated] = useState(false);
     const [isExpenseUpdated, setIsExpenseUpdated] = useState(false);
     const [isExpenseDeleted, setIsExpenseDeleted] = useState(false);
+    const [incomes, setIncomes] = useState([]);
+    const [isIncomeUpdated, setIsIncomeUpdated] = useState(false);
+    const [isIncomeDeleted, setIsIncomeDeleted] = useState(false);
 
     const {user, setUser} = useContext(UserContext);
 
@@ -24,13 +28,20 @@ function Dashboard() {
     }, []);
 
     useEffect(() => {
-        if (user) {
-            fetch(`http://localhost:8080/api/expenseList/${user.userId}`)
-                .then(response => response.json())
-                .then(data => setExpenses(data))
-                .catch(error => console.error('Error:', error));
-        }
-    }, [isExpenseCreated, isExpenseUpdated, isExpenseDeleted,user]);
+    if (user) {
+        fetch(`http://localhost:8080/api/expenseList/${user.userId}`)
+            .then(response => response.json())
+            .then(data => setExpenses(data))
+            .catch(error => console.error('Error:', error));
+
+        fetch(`http://localhost:8080/api/incomeListByMonth/${user.userId}`)
+            .then(response => response.json())
+            .then(data => setIncomes(data))
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+    }
+}, [user, isExpenseCreated, isExpenseUpdated, isExpenseDeleted, isIncomeDeleted]);
+
 
     if (!user) {
         return <div>Usuario no detectado</div>; // Or your loading spinner
@@ -45,9 +56,14 @@ function Dashboard() {
                                   userId={user.userId}
                                   setIsExpenseUpdated={setIsExpenseUpdated}
                                   setIsExpenseDeleted={setIsExpenseDeleted}
-                    />
-                </Box>
 
+                    />
+                    <IncomeTable incomes={incomes}
+                                 userId={user.userId}
+                                 setIsIncomeDeleted={setIsIncomeDeleted}
+                    />
+
+                </Box>
                 <Box className="buttonsContainer">
                     <AddExpense
                         userId={user.userId}

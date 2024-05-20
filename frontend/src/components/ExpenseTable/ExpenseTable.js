@@ -3,7 +3,7 @@ import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
 import Pagination from "@mui/material/Pagination";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import ModalWindow from '../../components/ModalWindowUpdateExpense/ModalWindow';
 
 
 function formatCategory(category) {
@@ -66,7 +66,7 @@ function ExpenseTable({expenses, tableSize, userId, setIsExpenseUpdated, setIsEx
 
     return (
         <TableContainer component={Paper} className="expense-table"
-                        style={{width: tableSize?.width || '100%', height: tableSize?.height || '100%'}}>
+                        style={{width: tableSize?.width || '65%', height: tableSize?.height || '100%'}}>
             <Table>
                 <TableHead className="table-head">
                     <TableRow>

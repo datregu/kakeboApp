@@ -1,4 +1,4 @@
-// src/components/ModalWindow/ModalWindow.js
+// src/components/ModalWindowUpdateExpense/ModalWindowUpdateExpense.js
 import React, {useEffect, useState} from 'react';
 import {Modal,Box, Typography, Button, TextField, Select, MenuItem} from "@mui/material";
 import Backdrop from '@mui/material/Backdrop';

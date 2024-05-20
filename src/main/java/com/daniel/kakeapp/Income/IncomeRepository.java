@@ -11,9 +11,9 @@ import java.util.List;
 
 @Repository
 public interface IncomeRepository extends JpaRepository<IncomeEntity, Integer>{
-    //Método para buscar ingresos en un mes concreto
-    @Query("SELECT i FROM IncomeEntity i WHERE MONTH(i.incomeDate) = :month")
-    List<IncomeEntity> findByIncomeMonth(@Param("month") int month);
+    //Método para buscar los ingresos del mes más reciente de un usuario
+    @Query("SELECT i FROM IncomeEntity i WHERE i.user.userId = :userId AND MONTH(i.incomeDate) = (SELECT MAX(MONTH(incomeDate)) FROM IncomeEntity i2 WHERE i2.user.userId = :userId)")
+    List<IncomeEntity> findIncomesByLatestMonth(@Param("userId") Integer userId);
 
     //Método para que devuelva el total de ingresos de un mes
     @Query ("SELECT SUM(i.incomeAmount) FROM IncomeEntity i WHERE MONTH(i.incomeDate) = :month")

@@ -45,10 +45,8 @@ public class IncomeService {
             throw new IllegalArgumentException("No se encuentra el ingreso con el ID proporcionado");
         }
     }
-
-    //Método para buscar un ingreso por mes, se le pasa el mes como parámetro
-    public List<IncomeEntity> findIncomesByMonth(int month) {
-        return incomeRepo.findByIncomeMonth(month);
+    public List<IncomeEntity> findIncomesByMonth(Integer userId) {
+        return incomeRepo.findIncomesByLatestMonth(userId);
     }
 
     // Método para buscar el total de ingresos de un mes
