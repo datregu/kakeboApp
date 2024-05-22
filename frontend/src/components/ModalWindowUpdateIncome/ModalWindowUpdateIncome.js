@@ -32,12 +32,11 @@ const ModalWindowUpdateIncome = ({ open, handleClose, title, income, userId, set
 
 
     const handleUpdateIncome = () => {
-        if (!incomeData.incomeAmount || !incomeData.incomeDate || !incomeData.incomeDescription || !incomeData.incomeCategory) {
-            alert('Please fill in all fields');
+        if (!incomeData.incomeAmount || !incomeData.incomeDate || !incomeData.incomeDescription) {
+            alert('Please fill in all fields fffff');
             return;
         }
 
-        // Ensure that incomeAmount is a number
         if (isNaN(incomeData.incomeAmount)) {
             alert('Income amount must be a number');
             return;
@@ -62,7 +61,7 @@ const ModalWindowUpdateIncome = ({ open, handleClose, title, income, userId, set
             }
         };
         console.log('Sending the following data:', JSON.stringify(incomeDataToSend));
-        fetch(`http://localhost:8080/api/update/${income.incomeId}`, {
+        fetch(`http://localhost:8080/api/updateIncome/${income.incomeId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

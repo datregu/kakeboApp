@@ -66,7 +66,7 @@ function ExpenseTable({expenses, tableSize, userId, setIsExpenseUpdated, setIsEx
 
     return (
         <TableContainer component={Paper} className="expense-table"
-                        style={{width: tableSize?.width || '65%', height: tableSize?.height || '100%'}}>
+                        style={{width: tableSize?.width || '60%', height: tableSize?.height || '100%'}}>
             <Table>
                 <TableHead className="table-head">
                     <TableRow>

@@ -40,7 +40,7 @@ function Dashboard() {
             .then(data => console.log(data))
             .catch(error => console.error('Error:', error));
     }
-}, [user, isExpenseCreated, isExpenseUpdated, isExpenseDeleted, isIncomeDeleted]);
+}, [user, isExpenseCreated, isExpenseUpdated, isExpenseDeleted, isIncomeDeleted, isIncomeUpdated]);
 
 
     if (!user) {
@@ -52,16 +52,18 @@ function Dashboard() {
             <Header/>
             <Box className="containerDashboard">
                 <Box className="expenseTableContainer">
+                    <IncomeTable incomes={incomes}
+                                 userId={user.userId}
+                                 setIsIncomeDeleted={setIsIncomeDeleted}
+                                 setIsIncomeUpdated={setIsIncomeUpdated}
+                    />
                     <ExpenseTable expenses={expenses}
                                   userId={user.userId}
                                   setIsExpenseUpdated={setIsExpenseUpdated}
                                   setIsExpenseDeleted={setIsExpenseDeleted}
 
                     />
-                    <IncomeTable incomes={incomes}
-                                 userId={user.userId}
-                                 setIsIncomeDeleted={setIsIncomeDeleted}
-                    />
+
 
                 </Box>
                 <Box className="buttonsContainer">

@@ -24,14 +24,17 @@ public class IncomeController {
     public void createIncome(@PathVariable Integer userId, @RequestBody IncomeEntity incomeEntity) {
         incomeService.createIncome(incomeEntity, userId);
     }
-
+    @PutMapping("/updateIncome/{incomeId}")
+    public void updateIncome(@PathVariable Integer incomeId, @RequestBody IncomeEntity incomeEntity) {
+        incomeService.updateIncome(incomeId, incomeEntity);
+    }
     @GetMapping("/incomeListByMonth/{userId}")
     @ResponseBody
     public List<IncomeEntity> incomeListByMonth(@PathVariable Integer userId) {
         return incomeService.findIncomesByMonth(userId);
     }
 
-@GetMapping("/totalIncomeByMonth")
+    @GetMapping("/totalIncomeByMonth")
     @ResponseBody
     public BigDecimal totalIncomeByMonth(@RequestParam int month) {
         return incomeService.findTotalIncomesByMonth(month);

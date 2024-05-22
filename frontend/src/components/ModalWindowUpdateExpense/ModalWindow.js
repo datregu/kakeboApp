@@ -1,4 +1,4 @@
-// src/components/ModalWindowUpdateExpense/ModalWindowUpdateExpense.js
+
 import React, {useEffect, useState} from 'react';
 import {Modal,Box, Typography, Button, TextField, Select, MenuItem} from "@mui/material";
 import Backdrop from '@mui/material/Backdrop';
@@ -46,7 +46,7 @@ const ModalWindow = ({ open, handleClose, title, expense, userId, setIsExpenseUp
             return;
         }
 
-        // Ensure that expenseAmount is a number
+
         if (isNaN(expenseData.expenseAmount)) {
             alert('Expense amount must be a number');
             return;
