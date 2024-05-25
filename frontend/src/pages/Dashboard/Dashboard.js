@@ -7,6 +7,7 @@ import style from  './Dashboard.css';
 import UserContext from "../../components/UserContext/UserContext";
 import {Box} from "@mui/material";
 import AddExpense from "../AddExpense/AddExpense";
+import AddIncome from '../../components/AddIncome/AddIncome';
 import IncomeTable from "../../components/IncomeTable/IncomeTable";
 
 function Dashboard() {
@@ -17,6 +18,7 @@ function Dashboard() {
     const [incomes, setIncomes] = useState([]);
     const [isIncomeUpdated, setIsIncomeUpdated] = useState(false);
     const [isIncomeDeleted, setIsIncomeDeleted] = useState(false);
+    const [isIncomeCreated, setIsIncomeCreated] = useState(false);
 
     const {user, setUser} = useContext(UserContext);
 
@@ -40,7 +42,7 @@ function Dashboard() {
             .then(data => console.log(data))
             .catch(error => console.error('Error:', error));
     }
-}, [user, isExpenseCreated, isExpenseUpdated, isExpenseDeleted, isIncomeDeleted, isIncomeUpdated]);
+}, [user, isExpenseCreated, isExpenseUpdated, isExpenseDeleted, isIncomeDeleted, isIncomeUpdated, isIncomeCreated]);
 
 
     if (!user) {
@@ -70,6 +72,9 @@ function Dashboard() {
                     <AddExpense
                         userId={user.userId}
                         setIsExpenseCreated={setIsExpenseCreated}/>
+                    <AddIncome
+                        userId={user.userId}
+                        setIsIncomeCreated={setIsIncomeUpdated}/>
                 </Box>
 
             </Box>

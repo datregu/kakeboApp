@@ -29,6 +29,9 @@ public class MonthlyRecordEntity {
     private Integer month;
 
     @Column
+    private BigDecimal fixed_expenses;
+
+    @Column
     private BigDecimal total_income;
 
     @Column

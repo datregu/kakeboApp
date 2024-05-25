@@ -21,5 +21,9 @@ public class MonthlyRecordController {
     public void setDesiredSavings(@RequestParam int userId, @RequestParam int month, @RequestParam int year, @RequestParam String desiredSavings) {
         monthlyRecordService.setDesiredSavings(userId, month, year, new BigDecimal(desiredSavings));
     }
+    @PostMapping("/setFixedExpenses")
+    public void setFixedExpenses(@RequestParam int userId, @RequestParam int month, @RequestParam int year, @RequestParam String fixedExpenses) {
+        monthlyRecordService.setFixedExpenses(userId, month, year, new BigDecimal(fixedExpenses));
+    }
 }
 

@@ -27,6 +27,7 @@ public class MonthlyRecordService {
             monthlyRecord.setUser(userRepo.findById(userId).orElse(null));
             monthlyRecord.setMonth(month);
             monthlyRecord.setYear(year);
+            monthlyRecord.setFixed_expenses(BigDecimal.ZERO);
             monthlyRecord.setDesired_savings(BigDecimal.ZERO);
         }
 
@@ -59,5 +60,21 @@ public class MonthlyRecordService {
 
     // Guardar el registro mensual actualizado en la base de datos
     monthlyRecordRepo.save(monthlyRecord);
+}
+public void setFixedExpenses (int userId, int month, int year, BigDecimal fixedExpenses) {
+    // Buscar el registro mensual para el usuario, mes y año dados
+    MonthlyRecordEntity monthlyRecord = monthlyRecordRepo.findByUserAndMonthAndYear(userId, month, year);
+
+    // Si el registro mensual no existe, lanzar una excepción
+    if (monthlyRecord == null) {
+        throw new IllegalArgumentException("No se encontró un registro mensual para el usuario, mes y año dados");
+    }
+
+    // Establecer el valor de fixed_expenses
+    monthlyRecord.setFixed_expenses(fixedExpenses);
+
+    // Guardar el registro mensual actualizado en la base de datos
+    monthlyRecordRepo.save(monthlyRecord);
+
 }
 }
