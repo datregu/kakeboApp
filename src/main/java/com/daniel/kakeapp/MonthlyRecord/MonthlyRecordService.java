@@ -32,9 +32,8 @@ public class MonthlyRecordService {
         }
 
         // Actualizar los campos del registro mensual con los datos de las tablas Income y Expense
-        monthlyRecord.setTotal_income(incomeRepo.findTotalIncomesByMonth(month)); // buscar
-        monthlyRecord.setTotal_expense(expenseRepo.findTotalExpensesByMonth(month)); // buscar
-
+        monthlyRecord.setTotal_income(incomeRepo.findTotalIncomesByLastMonth(userId).orElse(BigDecimal.ZERO));
+        monthlyRecord.setTotal_expense(expenseRepo.findTotalExpensesByLastMonth(userId).orElse(BigDecimal.ZERO));
 
         // Calcular el total de ahorros real_savings
         BigDecimal realSavings = monthlyRecord.getTotal_income().subtract(monthlyRecord.getTotal_expense());
@@ -61,6 +60,8 @@ public class MonthlyRecordService {
     // Guardar el registro mensual actualizado en la base de datos
     monthlyRecordRepo.save(monthlyRecord);
 }
+
+
 public void setFixedExpenses (int userId, int month, int year, BigDecimal fixedExpenses) {
     // Buscar el registro mensual para el usuario, mes y año dados
     MonthlyRecordEntity monthlyRecord = monthlyRecordRepo.findByUserAndMonthAndYear(userId, month, year);
