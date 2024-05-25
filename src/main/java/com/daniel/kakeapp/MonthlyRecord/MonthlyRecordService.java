@@ -32,8 +32,8 @@ public class MonthlyRecordService {
         }
 
         // Actualizar los campos del registro mensual con los datos de las tablas Income y Expense
-        monthlyRecord.setTotal_income(incomeRepo.findTotalIncomesByMonth(month));
-        monthlyRecord.setTotal_expense(expenseRepo.findTotalExpensesByMonth(month));
+        monthlyRecord.setTotal_income(incomeRepo.findTotalIncomesByMonth(month)); // buscar
+        monthlyRecord.setTotal_expense(expenseRepo.findTotalExpensesByMonth(month)); // buscar
 
 
         // Calcular el total de ahorros real_savings

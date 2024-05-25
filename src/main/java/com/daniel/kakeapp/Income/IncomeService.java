@@ -63,4 +63,9 @@ public void updateIncome(Integer incomeId, IncomeEntity incomeEntity) {
     public BigDecimal findTotalIncomesByMonth(int month) {
         return incomeRepo.findTotalIncomesByMonth(month);
     }
+
+    // Método para buscar el total de ingresos del mes más reciente por usuario
+    public BigDecimal findTotalIncomesByLastMonth(Integer userId) {
+        return incomeRepo.findTotalIncomesByLastMonth(userId).orElse(BigDecimal.ZERO);
+    }
 }

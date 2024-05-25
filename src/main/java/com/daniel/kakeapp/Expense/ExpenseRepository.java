@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -25,4 +26,9 @@ List<ExpenseEntity> findByExpenseMonth(@Param("month") int month);
     // Método para buscar gastos por usuario
     @Query("SELECT e FROM ExpenseEntity e WHERE e.user = :user ORDER BY e.expenseDate DESC")
     List<ExpenseEntity> findByUser(UserEntity user);
+
+    // Método para buscar el total de gastos del mes más reciente por usuario
+    @Query("SELECT SUM(e.expenseAmount) FROM ExpenseEntity e WHERE e.user.userId = :userId AND MONTH(e.expenseDate) = (SELECT MONTH(MAX(e.expenseDate)) FROM ExpenseEntity e WHERE e.user.userId = :userId)")
+    Optional<BigDecimal> findTotalExpensesByLastMonth(@Param("userId") Integer userId);
+
 }

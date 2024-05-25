@@ -43,4 +43,10 @@ public class IncomeController {
     public void deleteIncome(@PathVariable Integer incomeId) {
         incomeService.deleteIncome(incomeId);
     }
+
+    @GetMapping("/totalIncomeByLastMonth/{userId}")
+    @ResponseBody
+    public BigDecimal totalIncomeByLastMonth(@PathVariable Integer userId) {
+        return incomeService.findTotalIncomesByLastMonth(userId);
+    }
 }
