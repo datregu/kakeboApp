@@ -31,4 +31,8 @@ List<ExpenseEntity> findByExpenseMonth(@Param("month") int month);
     @Query("SELECT SUM(e.expenseAmount) FROM ExpenseEntity e WHERE e.user.userId = :userId AND MONTH(e.expenseDate) = (SELECT MONTH(MAX(e.expenseDate)) FROM ExpenseEntity e WHERE e.user.userId = :userId)")
     Optional<BigDecimal> findTotalExpensesByLastMonth(@Param("userId") Integer userId);
 
+    // Método para buscar el total de una categoria de gastos del mes más reciente por usuario
+    @Query("SELECT SUM(e.expenseAmount) FROM ExpenseEntity e WHERE e.user.userId = :userId AND e.expenseCategory = :category AND MONTH(e.expenseDate) = (SELECT MONTH(MAX(e.expenseDate)) FROM ExpenseEntity e WHERE e.user.userId = :userId)")
+    Optional<BigDecimal> findTotalExpensesByCategoryAndLastMonth(@Param("userId") Integer userId, @Param("category") ExpenseCategory category);
+
 }

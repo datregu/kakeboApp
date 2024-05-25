@@ -3,12 +3,13 @@
 import React, {useEffect, useState, useContext} from 'react';
 import ExpenseTable from '../../components/ExpenseTable/ExpenseTable';
 import Header from '../../components/Header/Header'
-import style from  './Dashboard.css';
+import style from './Dashboard.css';
 import UserContext from "../../components/UserContext/UserContext";
 import {Box} from "@mui/material";
 import AddExpense from "../AddExpense/AddExpense";
 import AddIncome from '../../components/AddIncome/AddIncome';
 import IncomeTable from "../../components/IncomeTable/IncomeTable";
+import MonthlyRecord from "../../components/MonthRecord/MonthlyRecord";
 
 function Dashboard() {
     const [expenses, setExpenses] = useState([]);
@@ -19,8 +20,11 @@ function Dashboard() {
     const [isIncomeUpdated, setIsIncomeUpdated] = useState(false);
     const [isIncomeDeleted, setIsIncomeDeleted] = useState(false);
     const [isIncomeCreated, setIsIncomeCreated] = useState(false);
+    const [monthlyRecord, setMonthlyRecord] = useState(null);
 
     const {user, setUser} = useContext(UserContext);
+    const year = '2024'
+    const month = '5'
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem('user'));
@@ -30,20 +34,23 @@ function Dashboard() {
     }, []);
 
     useEffect(() => {
-    if (user) {
-        fetch(`http://localhost:8080/api/expenseList/${user.userId}`)
-            .then(response => response.json())
-            .then(data => setExpenses(data))
-            .catch(error => console.error('Error:', error));
+        if (user) {
+            fetch(`http://localhost:8080/api/expenseList/${user.userId}`)
+                .then(response => response.json())
+                .then(data => setExpenses(data))
+                .catch(error => console.error('Error:', error));
 
-        fetch(`http://localhost:8080/api/incomeListByMonth/${user.userId}`)
-            .then(response => response.json())
-            .then(data => setIncomes(data))
-            .then(data => console.log(data))
-            .catch(error => console.error('Error:', error));
-    }
-}, [user, isExpenseCreated, isExpenseUpdated, isExpenseDeleted, isIncomeDeleted, isIncomeUpdated, isIncomeCreated]);
+            fetch(`http://localhost:8080/api/incomeListByMonth/${user.userId}`)
+                .then(response => response.json())
+                .then(data => setIncomes(data))
+                .catch(error => console.error('Error:', error));
 
+            fetch(`http://localhost:8080/api/monthlyRecord?month=${month}&year=${year}&userId=${user.userId}`)
+                .then(response => response.json())
+                .then(data => setMonthlyRecord(data))
+                .catch(error => console.error('Error:', error));
+        }
+    }, [user, isExpenseCreated, isExpenseUpdated, isExpenseDeleted, isIncomeDeleted, isIncomeUpdated, isIncomeCreated]);
 
     if (!user) {
         return <div>Usuario no detectado</div>; // Or your loading spinner
@@ -51,32 +58,35 @@ function Dashboard() {
 
     return (
         <>
-            <Header/>
+            <Header />
             <Box className="containerDashboard">
                 <Box className="expenseTableContainer">
-                    <IncomeTable incomes={incomes}
-                                 userId={user.userId}
-                                 setIsIncomeDeleted={setIsIncomeDeleted}
-                                 setIsIncomeUpdated={setIsIncomeUpdated}
+                    <IncomeTable
+                        incomes={incomes}
+                        userId={user.userId}
+                        setIsIncomeDeleted={setIsIncomeDeleted}
+                        setIsIncomeUpdated={setIsIncomeUpdated}
                     />
-                    <ExpenseTable expenses={expenses}
-                                  userId={user.userId}
-                                  setIsExpenseUpdated={setIsExpenseUpdated}
-                                  setIsExpenseDeleted={setIsExpenseDeleted}
-
+                    <ExpenseTable
+                        expenses={expenses}
+                        userId={user.userId}
+                        setIsExpenseUpdated={setIsExpenseUpdated}
+                        setIsExpenseDeleted={setIsExpenseDeleted}
                     />
-
-
                 </Box>
                 <Box className="buttonsContainer">
                     <AddExpense
                         userId={user.userId}
-                        setIsExpenseCreated={setIsExpenseCreated}/>
+                        setIsExpenseCreated={setIsExpenseCreated}
+                    />
                     <AddIncome
                         userId={user.userId}
-                        setIsIncomeCreated={setIsIncomeUpdated}/>
+                        setIsIncomeCreated={setIsIncomeCreated}
+                    />
                 </Box>
-
+                <MonthlyRecord
+                    record={monthlyRecord}
+                />
             </Box>
         </>
     );
