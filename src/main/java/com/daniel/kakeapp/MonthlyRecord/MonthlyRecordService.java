@@ -1,5 +1,6 @@
 package com.daniel.kakeapp.MonthlyRecord;
 
+import com.daniel.kakeapp.Expense.ExpenseCategory;
 import com.daniel.kakeapp.Expense.ExpenseRepository;
 import com.daniel.kakeapp.Income.IncomeRepository;
 import com.daniel.kakeapp.User.UserRepository;
@@ -29,11 +30,18 @@ public class MonthlyRecordService {
             monthlyRecord.setYear(year);
             monthlyRecord.setFixed_expenses(BigDecimal.ZERO);
             monthlyRecord.setDesired_savings(BigDecimal.ZERO);
+            monthlyRecord.setReal_savings(BigDecimal.ZERO);
         }
 
         // Actualizar los campos del registro mensual con los datos de las tablas Income y Expense
         monthlyRecord.setTotal_income(incomeRepo.findTotalIncomesByLastMonth(userId).orElse(BigDecimal.ZERO));
         monthlyRecord.setTotal_expense(expenseRepo.findTotalExpensesByLastMonth(userId).orElse(BigDecimal.ZERO));
+
+        //Actualizar los campos de los gastos por categoria
+        monthlyRecord.setTotal_culture_expenses(expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.CULTURA).orElse(BigDecimal.ZERO));
+        monthlyRecord.setTotal_survival_expenses(expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.SUPERVIVENCIA).orElse(BigDecimal.ZERO));
+        monthlyRecord.setTotal_leisure_expenses(expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.OCIO_Y_VICIO).orElse(BigDecimal.ZERO));
+        monthlyRecord.setTotal_extras_expenses(expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.EXTRAS).orElse(BigDecimal.ZERO));
 
         // Calcular el total de ahorros real_savings
         BigDecimal realSavings = monthlyRecord.getTotal_income().subtract(monthlyRecord.getTotal_expense());

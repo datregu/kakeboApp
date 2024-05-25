@@ -86,4 +86,8 @@ public class ExpenseService {
         return expenseRepo.findTotalExpensesByLastMonth(userId).orElse(BigDecimal.ZERO);
     }
 
+    public BigDecimal findTotalExpensesByCategoryAndLastMonth(Integer userId, ExpenseCategory category) {
+        return expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, category).orElse(BigDecimal.ZERO);
+    }
+
 }

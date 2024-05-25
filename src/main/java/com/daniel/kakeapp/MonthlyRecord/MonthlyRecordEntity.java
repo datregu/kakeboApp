@@ -43,6 +43,17 @@ public class MonthlyRecordEntity {
     @Column
     private BigDecimal real_savings;
 
+    @Column
+    private BigDecimal total_culture_expenses;
+
+    @Column
+    private BigDecimal total_survival_expenses;
+
+    @Column
+    private BigDecimal total_leisure_expenses;
+
+    @Column
+    private BigDecimal total_extras_expenses;
 
     @ManyToOne
     @JoinColumn(name = "id_user_monthly_record", referencedColumnName = "user_id")
