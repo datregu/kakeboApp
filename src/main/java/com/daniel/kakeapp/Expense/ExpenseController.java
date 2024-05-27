@@ -53,7 +53,6 @@ public class ExpenseController {
         return expenseService.findExpensesByCategory(category);
     }
 
-
     // Método para buscar por mes
     // Para llamar a este método, se debe hacer una petición GET a /expense/listByMonth?month=MONTH
     @GetMapping("/listByMonth")
@@ -82,6 +81,8 @@ public class ExpenseController {
     public BigDecimal findTotalExpensesByUserIdAndMonth(@PathVariable Integer userId) {
         return expenseService.findTotalExpensesByLastMonth(userId);
     }
+
+
 
 }
 

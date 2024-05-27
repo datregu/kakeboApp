@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 @Service
@@ -105,8 +106,10 @@ public List<ExpenseEntity> listExpensesExcludeFixed(Integer userId) {
         return expenseRepo.findTotalExpensesByLastMonth(userId).orElse(BigDecimal.ZERO);
     }
 
+
     public BigDecimal findTotalExpensesByCategoryAndLastMonth(Integer userId, ExpenseCategory category) {
         return expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, category).orElse(BigDecimal.ZERO);
     }
+
 
 }

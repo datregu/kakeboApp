@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -12,18 +13,21 @@ import java.math.BigDecimal;
 public class MonthlyRecordController {
     private final MonthlyRecordService monthlyRecordService;
 
-    @GetMapping("/monthlyRecord")
-    public MonthlyRecordEntity getMonthlyRecord(@RequestParam int month, @RequestParam int year, @RequestParam Integer userId) {
-        return monthlyRecordService.getAndUpdateMonthlyRecord(month, year, userId);
+    @GetMapping("/getMonthlyRecord/{userId}")
+    public MonthlyRecordEntity getMonthlyRecord(@PathVariable Integer userId) {
+        return monthlyRecordService.getLatestMonthlyRecord(userId);
     }
 
     @PostMapping("/setDesiredSavings")
     public void setDesiredSavings(@RequestParam int userId, @RequestParam int month, @RequestParam int year, @RequestParam String desiredSavings) {
         monthlyRecordService.setDesiredSavings(userId, month, year, new BigDecimal(desiredSavings));
     }
-    @PostMapping("/setFixedExpenses")
-    public void setFixedExpenses(@RequestParam int userId, @RequestParam int month, @RequestParam int year, @RequestParam String fixedExpenses) {
-        monthlyRecordService.setFixedExpenses(userId, month, year, new BigDecimal(fixedExpenses));
+
+    @PostMapping("/addMonthlyRecord/{userId}")
+    public MonthlyRecordEntity addMonthlyRecord(@PathVariable Integer userId, @RequestBody Map<String, String> body) {
+        BigDecimal desiredSavings = new BigDecimal(body.get("desiredSavings"));
+        return monthlyRecordService.addMonthlyRecord(userId, desiredSavings);
     }
+
 }
 

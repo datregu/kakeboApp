@@ -9,6 +9,7 @@ import MonthlyRecord from "../../components/MonthRecord/MonthlyRecord";
 import FixedExpenseTable from "../../components/FixedExpenseTable/FixedExpenseTable";
 import UserContext from "../../components/UserContext/UserContext";
 import style from "./Dashboard.css"; // Make sure this import is correctly used
+import MoneyWidget from "../../components/MoneyWidget/MoneyWidget";
 
 function Dashboard() {
   // Estados para gastos
@@ -55,7 +56,7 @@ function Dashboard() {
         .catch((error) => console.error("Error:", error));
 
       fetch(
-        `http://localhost:8080/api/monthlyRecord?month=${month}&year=${year}&userId=${user.userId}`,
+        `http://localhost:8080/api/getMonthlyRecord/${user.userId}`,
       )
         .then((response) => response.json())
         .then((data) => setMonthlyRecord(data))
@@ -121,7 +122,7 @@ function Dashboard() {
                 userId={user.userId}
                 setIsIncomeCreated={setIsIncomeCreated}
             />
-            <div>Total: <b>{totalIncomeMonth} €</b></div>
+            <MoneyWidget amount={totalIncomeMonth} />
             </Box>
           <b>Gastos Fijos</b>
           <FixedExpenseTable
@@ -150,7 +151,7 @@ function Dashboard() {
                 userId={user.userId}
                 setIsExpenseCreated={setIsExpenseCreated}
             />
-            <div>Total: <b>{totalExpenseMonth} €</b></div>
+            <MoneyWidget amount={monthlyRecord ? monthlyRecord.total_expense : 0} />
 
           </Box>
           <Box className="monthlyRecord">

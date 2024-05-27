@@ -73,7 +73,7 @@ function MonthlyRecord({ record }) {
         {record.total_income - record.fixed_expenses - record.desired_savings} €
       </div>
 
-      <div>Gasto total: {record.total_expense} €</div>
+      <div>Gasto total: {record.total_expense} € (sin fixed)</div>
       <div>
         De tu presupuestos mensual de{" "}
         {record.total_income - record.fixed_expenses - record.desired_savings}{" "}
