@@ -21,8 +21,8 @@ public class ExpenseController {
     }
 
     @PostMapping("/createExpense/{userId}")
-    public void createExpense(@PathVariable  Integer userId, @RequestBody ExpenseEntity expenseEntity) {
-        expenseService.createExpense(expenseEntity, userId  );
+    public void createExpense(@PathVariable Integer userId, @RequestBody ExpenseEntity expenseEntity) {
+        expenseService.createExpense(expenseEntity, userId);
     }
 
     @PutMapping("/update/{expenseId}")
@@ -33,7 +33,7 @@ public class ExpenseController {
     @GetMapping("/expenseList/{userId}")
     @ResponseBody
     public List<ExpenseEntity> listExpenses(@PathVariable Integer userId) {
-        return expenseService.listExpenses(userId);
+        return expenseService.listExpensesExcludeFixed(userId);
     }
 
     /* Método para eliminar un gasto en la base de datos por su expenseId */
@@ -69,11 +69,19 @@ public class ExpenseController {
     public BigDecimal totalExpensesByMonth(@RequestParam int month) {
         return expenseService.findTotalExpensesByMonth(month);
     }
+
+    // Método para devolver el total de gastos FIJOS del ultimo mes
+    @GetMapping("/expenseListFixedLastMonth/{userId}")
+    @ResponseBody
+    public List<ExpenseEntity> listExpensesOnlyFixedLastMonth(@PathVariable Integer userId) {
+        return expenseService.listExpensesOnlyFixedLastMonth(userId);
+    }
+
     @GetMapping("/totalExpenseByLastMonth/{userId}")
-@ResponseBody
-public BigDecimal findTotalExpensesByUserIdAndMonth(@PathVariable Integer userId) {
-    return expenseService.findTotalExpensesByLastMonth(userId);
-}
+    @ResponseBody
+    public BigDecimal findTotalExpensesByUserIdAndMonth(@PathVariable Integer userId) {
+        return expenseService.findTotalExpensesByLastMonth(userId);
+    }
 
 }
 

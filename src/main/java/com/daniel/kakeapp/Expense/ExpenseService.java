@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -39,6 +40,14 @@ public class ExpenseService {
                 .orElseThrow(() -> new IllegalArgumentException("No se encuentra el usuario con el ID proporcionado"));
         return expenseRepo.findByUser(user);
     }
+/* Método para listar todos los gastos en la base de datos EXCEPTO LOS FIXED */
+public List<ExpenseEntity> listExpensesExcludeFixed(Integer userId) {
+    UserEntity user = userRepo.findById(userId)
+            .orElseThrow(() -> new IllegalArgumentException("No se encuentra el usuario con el ID proporcionado"));
+    List<ExpenseEntity> expenses = expenseRepo.findByUser(user);
+    expenses.removeIf(expense -> expense.getExpenseCategory() == ExpenseCategory.FIXED);
+    return expenses;
+}
 
     /* Método para eliminar un gasto en la base de datos por su ID */
     public void deleteExpense(Integer expenseId) {
@@ -47,6 +56,16 @@ public class ExpenseService {
         } else {
             throw new IllegalArgumentException("No se encuentra el gasto con el ID proporcionado");
         }
+    }
+
+    public List<ExpenseEntity> listExpensesOnlyFixedLastMonth(Integer userId) {
+        UserEntity user = userRepo.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("No se encuentra el usuario con el ID proporcionado"));
+        List<ExpenseEntity> expenses = expenseRepo.findByUser(user);
+        expenses.removeIf(expense -> expense.getExpenseCategory() != ExpenseCategory.FIXED);
+        LocalDate oneMonthAgo = LocalDate.now().minusMonths(1);
+        expenses.removeIf(expense -> expense.getExpenseDate().isBefore(oneMonthAgo));
+        return expenses;
     }
 
     /* Método para buscar por expenseCategory

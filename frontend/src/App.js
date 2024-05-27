@@ -1,23 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './pages/Login/Login';
-import Dashboard from './pages/Dashboard/Dashboard';
-import UserContext from './components/UserContext/UserContext';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Login from "./pages/Login/Login";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import UserContext from "./components/UserContext/UserContext";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./theme"; // Asegúrate de importar tu tema personalizado
+
 function App() {
-    const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
-    return (
-        <UserContext.Provider value={{ user, setUser }}>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<Login />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    {/* otras rutas aquí */}
-                </Routes>
-            </Router>
-        </UserContext.Provider>
-    );
+  return (
+    <ThemeProvider theme={theme}>
+      <UserContext.Provider value={{ user, setUser }}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            {/* otras rutas aquí */}
+          </Routes>
+        </Router>
+      </UserContext.Provider>
+    </ThemeProvider>
+  );
 }
 
 export default App;

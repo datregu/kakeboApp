@@ -4,5 +4,6 @@ public enum ExpenseCategory {
     SUPERVIVENCIA,
     OCIO_Y_VICIO,
     CULTURA,
-    EXTRAS
+    EXTRAS,
+    FIXED,
 }

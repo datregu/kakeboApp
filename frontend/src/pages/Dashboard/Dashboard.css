@@ -1,21 +1,54 @@
 .containerDashboard {
+  display: flex;
+  flex-direction: row;
+  vertical-align: middle;
+  justify-content: space-between;
+  border: 3px solid purple; /* Solo para visualizar el contenedor */
+  height: 100%;
+}
+.leftBar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  border: 3px dotted green; /* Solo para visualizar el contenedor */
+  width: 30%;
+  margin: 2% 2% 2% 4%;
+}
+.expenseTableContainer {
+  display: flex;
+  width: 100%; /* Limita el ancho de la tabla de gastos */
+  height: 100%;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.rightBar {
+  width: 200%; /* Limita el ancho del componente AddExpense */
+  margin: 2% 4% 2% 2%;
+    border: 3px solid orange; /* Solo para visualizar el contenedor */
+  height: 100%;
+}
+.expenseResume {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: 3px dotted red; /* Solo para visualizar el contenedor */
+}
+.incomeResume {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: 3px dotted blue; /* Solo para visualizar el contenedor */
+  width: 100%;
+}
+.monthlyRecord{
     display: flex;
     flex-direction: column;
-    vertical-align: middle;
     justify-content: space-between;
-    border: 3px solid red; /* Solo para visualizar el contenedor */
-}
-
-.expenseTableContainer{
-   display: flex;
-    width: 100%; /* Limita el ancho de la tabla de gastos */
-    border: 1px solid red; /* Solo para visualizar el contenedor */
-    height: 100%;
-    gap: 1rem;
-    justify-content: center;
-}
-
-.buttonsContainer{
-    width: 100%; /* Limita el ancho del componente AddExpense */
-    border: 1px solid red; /* Solo para visualizar el contenedor */
+    align-items: center;
+    border: 3px dotted yellow; /* Solo para visualizar el contenedor */
+    width: 100%;
 }
