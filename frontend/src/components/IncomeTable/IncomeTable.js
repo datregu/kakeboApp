@@ -16,12 +16,12 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import ModalWindowUpdateIncome from "../../components/ModalWindowUpdateIncome/ModalWindowUpdateIncome";
 
 function IncomeTable({
-                       incomes,
-                       userId,
-                       tableSize,
-                       setIsIncomeDeleted,
-                       setIsIncomeUpdated,
-                     }) {
+  incomes,
+  userId,
+  tableSize,
+  setIsIncomeDeleted,
+  setIsIncomeUpdated,
+}) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [incomeToEdit, setIncomeToEdit] = useState(null);
@@ -38,26 +38,26 @@ function IncomeTable({
 
   const handleDeleteIncome = (incomeId) => {
     const userConfirmation = window.confirm(
-        "¿Estás seguro de que quieres borrar este ingreso?",
+      "¿Estás seguro de que quieres borrar este ingreso?",
     );
     if (userConfirmation) {
       fetch(`http://localhost:8080/api/deleteIncome/${incomeId}`, {
         method: "DELETE",
       })
-          .then((response) => {
-            if (!response.ok) {
-              alert("No se ha podido eliminar el ingreso");
-            } else {
-              setIsIncomeDeleted((prevState) => !prevState);
-              setSnackbarOpen(true);
-            }
-          })
-          .catch((error) => {
-            console.error(
-                "There has been a problem with your fetch operation:",
-                error,
-            );
-          });
+        .then((response) => {
+          if (!response.ok) {
+            alert("No se ha podido eliminar el ingreso");
+          } else {
+            setIsIncomeDeleted((prevState) => !prevState);
+            setSnackbarOpen(true);
+          }
+        })
+        .catch((error) => {
+          console.error(
+            "There has been a problem with your fetch operation:",
+            error,
+          );
+        });
     }
   };
 
@@ -72,7 +72,6 @@ function IncomeTable({
     setIncomeToEdit(null);
   };
 
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -86,137 +85,151 @@ function IncomeTable({
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? "simple-popover" : undefined;
 
   return (
-      <TableContainer
-          component={Paper}
-          className="income-table"
-          style={{
-            width: "100%",
-            height: tableSize?.height || "100%",
-          }}
+    <TableContainer
+      component={Paper}
+      className="income-table"
+      style={{
+        width: "100%",
+        height: tableSize?.height || "100%",
+      }}
+    >
+      <Table size="small">
+        <TableHead className="table-head">
+          <TableRow>
+            <TableCell
+              sx={{
+                color: "white",
+                fontSize: "0.8rem",
+                backgroundColor: "#a3966a",
+                textAlign: "center",
+              }}
+            >
+              Fecha
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "white",
+                fontSize: "0.8rem",
+                backgroundColor: "#a3966a",
+                textAlign: "center",
+              }}
+            >
+              Cantidad
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "white",
+                fontSize: "0.8rem",
+                backgroundColor: "#a3966a",
+                textAlign: "center",
+              }}
+            >
+              Descripción
+            </TableCell>
+            <TableCell
+              sx={{
+                color: "white",
+                fontSize: "0.8rem",
+                backgroundColor: "#a3966a",
+                verticalAlign: "center",
+              }}
+            ></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {incomes
+            .slice((page - 1) * rowsPerPage, page * rowsPerPage)
+            .map((income) => (
+              <TableRow
+                key={income.incomeId}
+                style={{ backgroundColor: "#A2CD32", cursor: "pointer" }}
+                onClick={(event) => handleRowClick(event, income)}
+              >
+                <TableCell
+                  component="th"
+                  scope="row"
+                  style={{
+                    backgroundColor: "#A2CD32",
+                    fontSize: "0.8rem",
+                    textAlign: "center",
+                  }}
+                >
+                  {income.incomeDate}
+                </TableCell>
+                <TableCell
+                  align="right"
+                  style={{
+                    backgroundColor: "#A2CD32",
+                    fontSize: "0.8rem",
+                    textAlign: "center",
+                  }}
+                >
+                  {income.incomeAmount}
+                </TableCell>
+                <TableCell
+                  align="right"
+                  style={{
+                    backgroundColor: "#A2CD32",
+                    fontSize: "0.8rem",
+                    textAlign: "center",
+                  }}
+                >
+                  {income.incomeDescription}
+                </TableCell>
+                <TableCell
+                  align="right"
+                  style={{
+                    backgroundColor: "#A2CD32",
+                    fontSize: "0.8rem",
+                    textAlign: "center",
+                  }}
+                ></TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handlePopoverClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
       >
-        <Table size="small">
-          <TableHead className="table-head">
-            <TableRow>
-              <TableCell
-                  sx={{
-                    color: "white",
-                    fontSize: "0.8rem",
-                    backgroundColor: "#a3966a",
-                    textAlign: "center",
-                  }}
-              >
-                Fecha
-              </TableCell>
-              <TableCell
-                  sx={{
-                    color: "white",
-                    fontSize: "0.8rem",
-                    backgroundColor: "#a3966a",
-                    textAlign: "center",
-                  }}
-              >
-                Cantidad
-              </TableCell>
-              <TableCell
-                  sx={{
-                    color: "white",
-                    fontSize: "0.8rem",
-                    backgroundColor: "#a3966a",
-                    textAlign: "center",
-                  }}
-              >
-                Descripción
-              </TableCell>
-              <TableCell
-                  sx={{
-                    color: "white",
-                    fontSize: "0.8rem",
-                    backgroundColor: "#a3966a",
-                    verticalAlign: "center",
-                  }}
-              >
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {incomes
-                .slice((page - 1) * rowsPerPage, page * rowsPerPage)
-                .map((income) => (
-                    <TableRow
-                        key={income.incomeId}
-                        style={{ backgroundColor: "#A2CD32", cursor: "pointer" }}
-                        onClick={(event) => handleRowClick(event, income)}
-                    >
-                      <TableCell
-                          component="th"
-                          scope="row"
-                          style={{ backgroundColor: "#A2CD32", fontSize: "0.8rem", textAlign: "center" }}
-                      >
-                        {income.incomeDate}
-                      </TableCell>
-                      <TableCell
-                          align="right"
-                          style={{ backgroundColor: "#A2CD32", fontSize: "0.8rem", textAlign: "center" }}
-                      >
-                        {income.incomeAmount}
-                      </TableCell>
-                      <TableCell
-                          align="right"
-                          style={{ backgroundColor: "#A2CD32", fontSize: "0.8rem", textAlign: "center" }}
-                      >
-                        {income.incomeDescription}
-                      </TableCell>
-                      <TableCell
-                          align="right"
-                          style={{ backgroundColor: "#A2CD32", fontSize: "0.8rem", textAlign: "center" }}
-                      >
-                      </TableCell>
-                    </TableRow>
-                ))}
-          </TableBody>
-        </Table>
-        <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handlePopoverClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-        >
-          <div style={{ display: 'flex', padding: '10px' }}>
-            <IconButton onClick={() => handleOpenModal(incomeToEdit)}>
-              <EditOutlinedIcon style={{ color: "black" }} />
-            </IconButton>
-            <IconButton onClick={() => handleDeleteIncome(incomeToEdit.incomeId)}>
-              <DeleteOutlineOutlinedIcon style={{ color: "black" }} />
-            </IconButton>
-          </div>
-        </Popover>
-        <Snackbar
-            open={snackbarOpen}
-            autoHideDuration={6000}
-            onClose={handleSnackbarClose}
-            message="Se ha eliminado el ingreso"
+        <div style={{ display: "flex", padding: "10px" }}>
+          <IconButton onClick={() => handleOpenModal(incomeToEdit)}>
+            <EditOutlinedIcon style={{ color: "black" }} />
+          </IconButton>
+          <IconButton onClick={() => handleDeleteIncome(incomeToEdit.incomeId)}>
+            <DeleteOutlineOutlinedIcon style={{ color: "black" }} />
+          </IconButton>
+        </div>
+      </Popover>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        message="Se ha eliminado el ingreso"
+      />
+      {incomeToEdit && (
+        <ModalWindowUpdateIncome
+          open={isModalOpen}
+          handleClose={handleCloseModal}
+          title="Editar ingreso"
+          income={incomeToEdit}
+          setIsIncomeUpdated={setIsIncomeUpdated}
         />
-        {incomeToEdit && (
-            <ModalWindowUpdateIncome
-                open={isModalOpen}
-                handleClose={handleCloseModal}
-                title="Editar ingreso"
-                income={incomeToEdit}
-                setIsIncomeUpdated={setIsIncomeUpdated}
-            />
-        )}
-      </TableContainer>
+      )}
+    </TableContainer>
   );
 }
 

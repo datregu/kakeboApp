@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  Box,
-  Typography,
-  Button,
-  TextField,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import { Modal, Box, Typography, Button, TextField } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
 
@@ -16,7 +8,6 @@ const ModalWindowUpdateIncome = ({
   handleClose,
   title,
   income,
-  userId,
   setIsIncomeUpdated,
 }) => {
   const user_id = 1;
@@ -50,7 +41,7 @@ const ModalWindowUpdateIncome = ({
       !incomeData.incomeDate ||
       !incomeData.incomeDescription
     ) {
-      alert("Please fill in all fields fffff");
+      alert("Please fill in all fields");
       return;
     }
 
@@ -73,15 +64,11 @@ const ModalWindowUpdateIncome = ({
       incomeAmount: incomeData.incomeAmount,
       incomeDate: formattedDate,
       incomeDescription: incomeData.incomeDescription,
-      incomeCategory: incomeData.incomeCategory,
       user: {
         userId: user_id,
       },
     };
-    console.log(
-      "Sending the following data:",
-      JSON.stringify(incomeDataToSend),
-    );
+
     fetch(`http://localhost:8080/api/updateIncome/${income.incomeId}`, {
       method: "PUT",
       headers: {
@@ -91,7 +78,7 @@ const ModalWindowUpdateIncome = ({
     })
       .then((response) => {
         if (response.ok) {
-          alert("Gasto actualizado correctamente");
+          alert("Income updated successfully");
           return response.text().then((text) => {
             return text ? JSON.parse(text) : {};
           });
@@ -101,7 +88,7 @@ const ModalWindowUpdateIncome = ({
       })
       .then((data) => {
         console.log("Success:", data);
-        // Actualizamos la tabla de gastos
+        // Actualizamos la tabla de ingresos
         setIsIncomeUpdated((prevState) => !prevState);
       })
       .catch((error) => {
@@ -143,7 +130,7 @@ const ModalWindowUpdateIncome = ({
           <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             <TextField
               name="incomeAmount"
-              label="Cantidad"
+              label="Amount"
               value={incomeData.incomeAmount}
               onChange={handleChange}
             />
@@ -163,7 +150,7 @@ const ModalWindowUpdateIncome = ({
             />
             <TextField
               name="incomeDescription"
-              label="Descripción"
+              label="Description"
               value={incomeData.incomeDescription}
               onChange={handleChange}
             />
@@ -172,18 +159,18 @@ const ModalWindowUpdateIncome = ({
             <Button
               variant="contained"
               color="primary"
-              aria-label="Volver"
+              aria-label="Back"
               onClick={handleClose}
             >
-              Volver
+              Back
             </Button>
             <Button
               onClick={handleUpdateIncome}
               variant="contained"
               color="primary"
-              aria-label="Actualizar"
+              aria-label="Update"
             >
-              Cambiar
+              Update
             </Button>
           </Box>
         </Box>

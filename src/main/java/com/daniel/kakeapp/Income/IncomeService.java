@@ -25,18 +25,15 @@ public class IncomeService {
     /* Método para actualizar un gasto en la base de datos por su ID */
 public void updateIncome(Integer incomeId, IncomeEntity incomeEntity) {
     if (incomeRepo.existsById(incomeId)) {
-        IncomeEntity existingIncome = incomeRepo.findById(incomeId).orElse(null);
-        if (existingIncome != null) {
-            if (incomeEntity.getUser() == null) {
-                incomeEntity.setUser(existingIncome.getUser());
-            } else {
-                UserEntity user = userRepo.findById(incomeEntity.getUser().getUserId())
-                    .orElseThrow(() -> new IllegalArgumentException("No se encuentra el usuario con el ID proporcionado"));
-                incomeEntity.setUser(user);
-            }
-            incomeEntity.setIncomeId(incomeId);
-            incomeRepo.save(incomeEntity);
-        }
+        IncomeEntity existingIncome = incomeRepo.findById(incomeId)
+                .orElseThrow(() -> new IllegalArgumentException("No se encuentra el ingreso con el ID proporcionado"));
+
+        existingIncome.setIncomeAmount(incomeEntity.getIncomeAmount());
+        existingIncome.setIncomeDate(incomeEntity.getIncomeDate());
+        existingIncome.setIncomeDescription(incomeEntity.getIncomeDescription());
+
+
+        incomeRepo.save(existingIncome);
     } else {
         throw new IllegalArgumentException("No se encuentra el ingreso con el ID proporcionado");
     }

@@ -47,34 +47,36 @@ function Dashboard() {
   useEffect(() => {
     if (user) {
       fetch(`http://localhost:8080/api/expenseList/${user.userId}`)
-          .then((response) => response.json())
-          .then((data) => setExpenses(data))
-          .catch((error) => console.error("Error:", error));
+        .then((response) => response.json())
+        .then((data) => setExpenses(data))
+        .catch((error) => console.error("Error:", error));
 
       fetch(`http://localhost:8080/api/incomeListByMonth/${user.userId}`)
-          .then((response) => response.json())
-          .then((data) => setIncomes(data))
-          .catch((error) => console.error("Error:", error));
+        .then((response) => response.json())
+        .then((data) => setIncomes(data))
+        .catch((error) => console.error("Error:", error));
 
       fetch(`http://localhost:8080/api/getMonthlyRecord/${user.userId}`)
-          .then((response) => response.json())
-          .then((data) => setMonthlyRecord(data))
-          .catch((error) => console.error("Error:", error));
+        .then((response) => response.json())
+        .then((data) => setMonthlyRecord(data))
+        .catch((error) => console.error("Error:", error));
 
-      fetch(`http://localhost:8080/api/expenseListFixedLastMonth/${user.userId}`)
-          .then((response) => response.json())
-          .then((data) => setFixedExpenses(data))
-          .catch((error) => console.error("Error:", error));
+      fetch(
+        `http://localhost:8080/api/expenseListFixedLastMonth/${user.userId}`,
+      )
+        .then((response) => response.json())
+        .then((data) => setFixedExpenses(data))
+        .catch((error) => console.error("Error:", error));
 
       fetch(`http://localhost:8080/api/totalExpenseByLastMonth/${user.userId}`)
-          .then((response) => response.json())
-          .then((data) => setTotalExpenseMonth(data))
-          .catch((error) => console.error("Error:", error));
+        .then((response) => response.json())
+        .then((data) => setTotalExpenseMonth(data))
+        .catch((error) => console.error("Error:", error));
 
       fetch(`http://localhost:8080/api/totalIncomeByLastMonth/${user.userId}`)
-          .then((response) => response.json())
-          .then((data) => setTotalIncomeMonth(data))
-          .catch((error) => console.error("Error:", error));
+        .then((response) => response.json())
+        .then((data) => setTotalIncomeMonth(data))
+        .catch((error) => console.error("Error:", error));
     }
   }, [
     user,
@@ -94,67 +96,69 @@ function Dashboard() {
   }
 
   return (
-      <>
-        <Header />
-        <Box className="containerDashboard">
-          <Box
-              className="leftBar"
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                width: "100%",
-                height: "100%",
-              }}
-          >
-            <b>Ingresos</b>
-            <IncomeTable
-                incomes={incomes}
-                userId={user.userId}
-                setIsIncomeDeleted={setIsIncomeDeleted}
-                setIsIncomeUpdated={setIsIncomeUpdated}
+    <>
+      <Header />
+      <Box className="containerDashboard">
+        <Box
+          className="leftBar"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <b>Ingresos</b>
+          <IncomeTable
+            incomes={incomes}
+            userId={user.userId}
+            setIsIncomeDeleted={setIsIncomeDeleted}
+            setIsIncomeUpdated={setIsIncomeUpdated}
+          />
+          <Box className="incomeResume">
+            <AddIncome
+              userId={user.userId}
+              setIsIncomeCreated={setIsIncomeCreated}
             />
-            <Box className="incomeResume">
-              <AddIncome
-                  userId={user.userId}
-                  setIsIncomeCreated={setIsIncomeCreated}
-              />
-              <MoneyWidget amount={totalIncomeMonth} />
-            </Box>
-            <b>Gastos Fijos</b>
-            <FixedExpenseTable
-                fixedExpenses={fixedExpenses}
-                userId={user.userId}
-                setIsFixedExpenseUpdated={setIsFixedExpenseUpdated}
-                setIsFixedExpenseDeleted={setIsFixedExpenseDeleted}
-            />
-            <div>Total Gastos Fijos: €</div>
-            <div>Presupuesto mensual inicial: €</div>
-            <div>Ahorro objetivo: €</div>
-            <div>Presupuesto mensual final: €</div>
+            <MoneyWidget amount={totalIncomeMonth} />
           </Box>
+          <b>Gastos Fijos</b>
+          <FixedExpenseTable
+            fixedExpenses={fixedExpenses}
+            userId={user.userId}
+            setIsFixedExpenseUpdated={setIsFixedExpenseUpdated}
+            setIsFixedExpenseDeleted={setIsFixedExpenseDeleted}
+          />
+          <div>Total Gastos Fijos: €</div>
+          <div>Presupuesto mensual inicial: €</div>
+          <div>Ahorro objetivo: €</div>
+          <div>Presupuesto mensual final: €</div>
+        </Box>
 
-          <Box className="rightBar">
-            <b>Gastos Diarios</b>
-            <ExpenseTable
-                expenses={expenses}
-                userId={user.userId}
-                setIsExpenseUpdated={setIsExpenseUpdated}
-                setIsExpenseDeleted={setIsExpenseDeleted}
+        <Box className="rightBar">
+          <b>Gastos Diarios</b>
+          <ExpenseTable
+            expenses={expenses}
+            userId={user.userId}
+            setIsExpenseUpdated={setIsExpenseUpdated}
+            setIsExpenseDeleted={setIsExpenseDeleted}
+          />
+          <Box className="expenseResume">
+            <AddExpense
+              userId={user.userId}
+              setIsExpenseCreated={setIsExpenseCreated}
             />
-            <Box className="expenseResume">
-              <AddExpense
-                  userId={user.userId}
-                  setIsExpenseCreated={setIsExpenseCreated}
-              />
-              <MoneyWidget amount={monthlyRecord ? monthlyRecord.total_expense : 0} />
-            </Box>
-            <Box className="monthlyRecord">
-              <MonthlyRecord record={monthlyRecord} />
-            </Box>
+            <MoneyWidget
+              amount={monthlyRecord ? monthlyRecord.total_expense : 0}
+            />
+          </Box>
+          <Box className="monthlyRecord">
+            <MonthlyRecord record={monthlyRecord} />
           </Box>
         </Box>
-      </>
+      </Box>
+    </>
   );
 }
 

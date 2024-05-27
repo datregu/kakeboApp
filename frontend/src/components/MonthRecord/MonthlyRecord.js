@@ -39,11 +39,7 @@ function MonthlyRecord({ record }) {
   }, [record]);
 
   if (!record || record.total_income === NaN) {
-    return (
-        <Box>
-          Aún no has hecho ningún ingreso
-        </Box>
-    );
+    return <Box>Aún no has hecho ningún ingreso</Box>;
   }
 
   const culturePercentage = (
