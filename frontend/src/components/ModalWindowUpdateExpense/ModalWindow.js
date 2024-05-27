@@ -92,7 +92,7 @@ const ModalWindow = ({
       "Sending the following data:",
       JSON.stringify(expenseDataToSend),
     );
-    fetch(`http://localhost:8080/api/update/${expense.expenseId}`, {
+    fetch(`http://localhost:8080/api/updateExpense/${expense.expenseId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

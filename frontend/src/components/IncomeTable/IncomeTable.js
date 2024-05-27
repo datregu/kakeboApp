@@ -64,7 +64,7 @@ function IncomeTable({
   const handleOpenModal = (income) => {
     setIncomeToEdit(income);
     setIsModalOpen(true);
-    setAnchorEl(null); // Cierra el Popover al abrir el modal
+    setAnchorEl(null);
   };
 
   const handleCloseModal = () => {

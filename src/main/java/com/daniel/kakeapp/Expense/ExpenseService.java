@@ -28,8 +28,15 @@ public class ExpenseService {
     /* Método para actualizar un gasto en la base de datos por su ID */
     public void updateExpense(Integer expenseId, ExpenseEntity expenseEntity) {
         if (expenseRepo.existsById(expenseId)) {
-            expenseEntity.setExpenseId(expenseId);
-            expenseRepo.save(expenseEntity);
+            ExpenseEntity existingExpense = expenseRepo.findById(expenseId)
+                    .orElseThrow(() -> new IllegalArgumentException("No se encuentra el gasto con el ID proporcionado"));
+
+            existingExpense.setExpenseAmount(expenseEntity.getExpenseAmount());
+            existingExpense.setExpenseDate(expenseEntity.getExpenseDate());
+            existingExpense.setExpenseDescription(expenseEntity.getExpenseDescription());
+            existingExpense.setExpenseCategory(expenseEntity.getExpenseCategory());
+
+            expenseRepo.save(existingExpense);
         } else {
             throw new IllegalArgumentException("No se encuentra el gasto con el ID proporcionado");
         }
