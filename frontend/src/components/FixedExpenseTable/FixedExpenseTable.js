@@ -25,7 +25,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import ModalWindowUpdateFixedExpense from "../../components/ModalWindowUpdateFixedExpense/ModalWindowUpdateFixedExpense";
 import MoneyWidget from "../../components/MoneyWidget/MoneyWidget";
 import "./FixedExpenseTable.css";
-
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 // Definir objetos de estilo reutilizables
 const tableCellStyle = {
     fontSize: "0.8rem",
@@ -192,7 +192,7 @@ function FixedExpenseTable({
                                 <TableCell style={tableCellStyle}>
                                     {expense.expenseAmount} €
                                 </TableCell>
-                                <TableCell style={tableCellStyle}></TableCell>
+                                <TableCell style={tableCellStyle}><RemoveRedEyeIcon /></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

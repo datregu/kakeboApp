@@ -134,14 +134,16 @@ function Dashboard() {
                 setIsFixedExpenseUpdated={setIsFixedExpenseUpdated}
                 setIsFixedExpenseDeleted={setIsFixedExpenseDeleted}
             />
-            <AddFixedExpense
+            {/* <AddFixedExpense
                 userId={user.userId}
                 setIsFixedExpenseCreated={setIsFixedExpenseCreated}
-            />
-            <div>Total Gastos Fijos: €</div>
-            <div>Presupuesto mensual inicial: €</div>
-            <div>Ahorro objetivo: €</div>
-            <div>Presupuesto mensual final: €</div>
+            />*/}
+            <Box style={{display: "flex", flexDirection: "column"}}>
+              <div>Presupuesto mensual inicial: {monthlyRecord ? monthlyRecord.total_income - monthlyRecord.fixed_expenses - monthlyRecord.desired_savings : 0} €
+              </div>
+              <div>Ahorro objetivo: {monthlyRecord ? monthlyRecord.desired_savings : 0}€</div>
+              <div>Presupuesto mensual final: €</div>
+            </Box>
           </Box>
 
           <Box className="rightBar">
