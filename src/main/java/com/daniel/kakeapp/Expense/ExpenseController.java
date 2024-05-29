@@ -81,6 +81,12 @@ public class ExpenseController {
     public BigDecimal findTotalExpensesByUserIdAndMonth(@PathVariable Integer userId) {
         return expenseService.findTotalExpensesByLastMonth(userId);
     }
+    // ExpenseController.java
+    @GetMapping("/totalFixedExpensesByLastMonth/{userId}")
+    @ResponseBody
+    public BigDecimal totalFixedExpensesByLastMonth(@PathVariable Integer userId) {
+        return expenseService.findTotalFixedExpensesByLastMonth(userId);
+    }
 
 
 

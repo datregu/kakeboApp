@@ -36,9 +36,9 @@ List<ExpenseEntity> findByExpenseMonth(@Param("month") int month);
     @Query("SELECT SUM(e.expenseAmount) FROM ExpenseEntity e WHERE e.user.userId = :userId AND e.expenseCategory = :category AND MONTH(e.expenseDate) = (SELECT MONTH(MAX(e.expenseDate)) FROM ExpenseEntity e WHERE e.user.userId = :userId)")
     Optional<BigDecimal> findTotalExpensesByCategoryAndLastMonth(@Param("userId") Integer userId, @Param("category") ExpenseCategory category);
 
-    @Query("SELECT SUM(e.expenseAmount) FROM ExpenseEntity e WHERE e.user.userId = :userId AND e.expenseCategory = :category AND e.expenseDate >= :startDate AND e.expenseDate < :endDate")
-    Optional<BigDecimal> findTotalExpensesByCategoryAndLastMonth(@Param("userId") Integer userId,
-                                                                 @Param("category") ExpenseCategory category,
-                                                                 @Param("startDate") LocalDate startDate,
-                                                                 @Param("endDate") LocalDate endDate);
+    // ExpenseRepository.java
+    @Query("SELECT SUM(e.expenseAmount) FROM ExpenseEntity e WHERE e.user.userId = :userId AND e.expenseCategory = 'FIXED' AND MONTH(e.expenseDate) = (SELECT MAX(MONTH(e.expenseDate)) FROM ExpenseEntity e WHERE e.user.userId = :userId AND e.expenseCategory = 'FIXED')")
+    Optional<BigDecimal> findTotalFixedExpensesByLastMonth(@Param("userId") Integer userId);
+
+
 }

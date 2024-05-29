@@ -124,8 +124,8 @@ function Dashboard() {
               {/* <AddIncome
                   userId={user.userId}
                   setIsIncomeCreated={setIsIncomeCreated}
-              />*/}
-              <MoneyWidget amount={totalIncomeMonth} />
+              />
+              <MoneyWidget amount={totalIncomeMonth} />*/}
             </Box>
             <b>Gastos Fijos</b>
             <FixedExpenseTable

@@ -118,5 +118,9 @@ public List<ExpenseEntity> listExpensesExcludeFixed(Integer userId) {
         return expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, category).orElse(BigDecimal.ZERO);
     }
 
+    public BigDecimal findTotalFixedExpensesByLastMonth(Integer userId) {
+        return expenseRepo.findTotalFixedExpensesByLastMonth(userId).orElse(BigDecimal.ZERO);
+    }
+
 
 }
