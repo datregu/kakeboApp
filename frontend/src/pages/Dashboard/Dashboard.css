@@ -26,7 +26,7 @@
 .rightBar {
   width: 200%; /* Limita el ancho del componente AddExpense */
   margin: 2% 4% 2% 2%;
-  border: 3px solid orange; /* Solo para visualizar el contenedor */
+  //border: 3px solid orange; /* Solo para visualizar el contenedor */
   height: 100%;
 }
 .expenseResume {
@@ -34,14 +34,15 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border: 3px dotted red; /* Solo para visualizar el contenedor */
+  //border: 3px dotted red; /* Solo para visualizar el contenedor */
+width: 100%;
 }
 .incomeResume {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border: 3px dotted blue; /* Solo para visualizar el contenedor */
+  //border: 3px dotted blue; /* Solo para visualizar el contenedor */
   width: 100%;
 }
 .monthlyRecord {
