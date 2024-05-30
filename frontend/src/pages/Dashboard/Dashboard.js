@@ -13,6 +13,7 @@ import style from "./Dashboard.css"; // Asegúrate de que esta importación se u
 import AddFixedExpense from "../../components/AddFixedExpense/AddFixedExpense";
 import PersonalBudgetWidget from "../../components/PersonalBudgetWidget/PersonalBudgetWidget";
 import SavingsGoal from '../../components/SavingGoal/SavingGoal';
+import { useFetch, postData } from '../../services/useFetch';
 
 function Dashboard() {
   // Estados para gastos
@@ -39,25 +40,53 @@ function Dashboard() {
   const [monthlyRecord, setMonthlyRecord] = useState(null);
   const [desiredSavings, setDesiredSavings] = useState(0);
 
-  const handleSavingsChange = (newSavings) => {
-    setDesiredSavings(newSavings);
-    fetch(`http://localhost:8080/api/setDesiredSavings?userId=${user.userId}&month=5&year=2024&desiredSavings=${newSavings}`, {
-      method: 'POST',
-    })
-        .then(response => response.json())
-        .then(data => {
-          fetch(`http://localhost:8080/api/getMonthlyRecord/${user.userId}`)
-              .then((response) => response.json())
-              .then((data) => {
-                setMonthlyRecord(data);
-              })
-              .catch((error) => console.error("Error:", error));
-        })
-        .catch(error => console.error('Error:', error));
-  };
-
   // Contexto de usuario
   const { user, setUser } = useContext(UserContext);
+
+  const { data: expensesData, loading: loadingExpenses, error: errorExpenses } = useFetch(`/expenseList/${user ? user.userId : ''}`, [user, isExpenseCreated, isExpenseUpdated, isExpenseDeleted]);
+  const { data: incomesData, loading: loadingIncomes, error: errorIncomes } = useFetch(`/incomeListByMonth/${user ? user.userId : ''}`, [user, isIncomeCreated, isIncomeUpdated, isIncomeDeleted]);
+  const { data: monthlyRecordData, loading: loadingMonthlyRecord, error: errorMonthlyRecord } = useFetch(`/getMonthlyRecord/${user ? user.userId : ''}`, [user]);
+  const { data: fixedExpensesData, loading: loadingFixedExpenses, error: errorFixedExpenses } = useFetch(`/expenseListFixedLastMonth/${user ? user.userId : ''}`, [user, isFixedExpenseCreated, isFixedExpenseUpdated, isFixedExpenseDeleted]);
+  const { data: totalExpenseMonthData, loading: loadingTotalExpenseMonth, error: errorTotalExpenseMonth } = useFetch(`/totalExpenseByLastMonth/${user ? user.userId : ''}`, [user]);
+  const { data: totalIncomeMonthData, loading: loadingTotalIncomeMonth, error: errorTotalIncomeMonth } = useFetch(`/totalIncomeByLastMonth/${user ? user.userId : ''}`, [user]);
+
+  useEffect(() => {
+    if (expensesData) setExpenses(expensesData);
+  }, [expensesData]);
+
+  useEffect(() => {
+    if (incomesData) setIncomes(incomesData);
+  }, [incomesData]);
+
+  useEffect(() => {
+    if (monthlyRecordData) {
+      setMonthlyRecord(monthlyRecordData);
+      setDesiredSavings(monthlyRecordData.desired_savings);
+    }
+  }, [monthlyRecordData]);
+
+  useEffect(() => {
+    if (fixedExpensesData) setFixedExpenses(fixedExpensesData);
+  }, [fixedExpensesData]);
+
+  useEffect(() => {
+    if (totalExpenseMonthData) setTotalExpenseMonth(totalExpenseMonthData);
+  }, [totalExpenseMonthData]);
+
+  useEffect(() => {
+    if (totalIncomeMonthData) setTotalIncomeMonth(totalIncomeMonthData);
+  }, [totalIncomeMonthData]);
+
+  const handleSavingsChange = (newSavings) => {
+    setDesiredSavings(newSavings);
+    postData(`/setDesiredSavings?userId=${user.userId}&month=5&year=2024&desiredSavings=${newSavings}`, {})
+        .then(() => fetch(`/getMonthlyRecord/${user.userId}`))
+        .then((response) => response.json())
+        .then((data) => {
+          setMonthlyRecord(data);
+        })
+        .catch((error) => console.error("Error:", error));
+  };
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -66,56 +95,16 @@ function Dashboard() {
     }
   }, []);
 
-  useEffect(() => {
-    if (user) {
-      fetch(`http://localhost:8080/api/expenseList/${user.userId}`)
-          .then((response) => response.json())
-          .then((data) => setExpenses(data))
-          .catch((error) => console.error("Error:", error));
-
-      fetch(`http://localhost:8080/api/incomeListByMonth/${user.userId}`)
-          .then((response) => response.json())
-          .then((data) => setIncomes(data))
-          .catch((error) => console.error("Error:", error));
-
-      fetch(`http://localhost:8080/api/getMonthlyRecord/${user.userId}`)
-          .then((response) => response.json())
-          .then((data) => {
-            setMonthlyRecord(data);
-            setDesiredSavings(data.desired_savings); // Actualizar el estado de desiredSavings aquí
-          })
-          .catch((error) => console.error("Error:", error));
-
-      fetch(`http://localhost:8080/api/expenseListFixedLastMonth/${user.userId}`)
-          .then((response) => response.json())
-          .then((data) => setFixedExpenses(data))
-          .catch((error) => console.error("Error:", error));
-
-      fetch(`http://localhost:8080/api/totalExpenseByLastMonth/${user.userId}`)
-          .then((response) => response.json())
-          .then((data) => setTotalExpenseMonth(data))
-          .catch((error) => console.error("Error:", error));
-
-      fetch(`http://localhost:8080/api/totalIncomeByLastMonth/${user.userId}`)
-          .then((response) => response.json())
-          .then((data) => setTotalIncomeMonth(data))
-          .catch((error) => console.error("Error:", error));
-    }
-  }, [
-    user,
-    isExpenseCreated,
-    isExpenseUpdated,
-    isExpenseDeleted,
-    isIncomeDeleted,
-    isIncomeUpdated,
-    isIncomeCreated,
-    isFixedExpenseCreated,
-    isFixedExpenseDeleted,
-    isFixedExpenseUpdated,
-  ]);
-
   if (!user) {
     return <div>Usuario no detectado</div>; // O tu spinner de carga
+  }
+
+  if (loadingExpenses || loadingIncomes || loadingMonthlyRecord || loadingFixedExpenses || loadingTotalExpenseMonth || loadingTotalIncomeMonth) {
+    return <div>Cargando datos...</div>;
+  }
+
+  if (errorExpenses || errorIncomes || errorMonthlyRecord || errorFixedExpenses || errorTotalExpenseMonth || errorTotalIncomeMonth) {
+    return <div>Error al cargar los datos.</div>;
   }
 
   return (
@@ -143,10 +132,10 @@ function Dashboard() {
             />
             <Box className="incomeResume">
               {/* <AddIncome
-                  userId={user.userId}
-                  setIsIncomeCreated={setIsIncomeCreated}
-              />
-              <MoneyWidget amount={totalIncomeMonth} />*/}
+                userId={user.userId}
+                setIsIncomeCreated={setIsIncomeCreated}
+            />
+            <MoneyWidget amount={totalIncomeMonth} />*/}
             </Box>
             <b>Gastos Fijos</b>
             <FixedExpenseTable
@@ -156,9 +145,9 @@ function Dashboard() {
                 setIsFixedExpenseDeleted={setIsFixedExpenseDeleted}
             />
             {/* <AddFixedExpense
-                userId={user.userId}
-                setIsFixedExpenseCreated={setIsFixedExpenseCreated}
-            />*/}
+              userId={user.userId}
+              setIsFixedExpenseCreated={setIsFixedExpenseCreated}
+          />*/}
             <SavingsGoal
                 monthlyRecord={monthlyRecord}
                 onSavingsChange={handleSavingsChange}
@@ -175,14 +164,14 @@ function Dashboard() {
                 setExpenses={setExpenses}
             />
             {/* <Box className="expenseResume">
-              <AddExpense
-                  userId={user.userId}
-                  setIsExpenseCreated={setIsExpenseCreated}
-              />
-              <MoneyWidget
-                  amount={monthlyRecord ? monthlyRecord.total_expense : 0}
-              />
-            </Box>*/}
+            <AddExpense
+                userId={user.userId}
+                setIsExpenseCreated={setIsExpenseCreated}
+            />
+            <MoneyWidget
+                amount={monthlyRecord ? monthlyRecord.total_expense : 0}
+            />
+          </Box>*/}
             <Box className="monthlyRecord">
               <MonthlyRecord record={monthlyRecord} />
               <PersonalBudgetWidget
@@ -202,4 +191,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-// Path: frontend/src/pages/Dashboard/Dashboard.js
