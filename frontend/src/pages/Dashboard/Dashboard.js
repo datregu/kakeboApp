@@ -9,9 +9,10 @@ import MonthlyRecord from "../../components/MonthRecord/MonthlyRecord";
 import FixedExpenseTable from "../../components/FixedExpenseTable/FixedExpenseTable";
 import UserContext from "../../components/UserContext/UserContext";
 import MoneyWidget from "../../components/MoneyWidget/MoneyWidget";
-import style from "./Dashboard.css"; // Make sure this import is correctly used
+import style from "./Dashboard.css"; // Asegúrate de que esta importación se use correctamente
 import AddFixedExpense from "../../components/AddFixedExpense/AddFixedExpense";
 import PersonalBudgetWidget from "../../components/PersonalBudgetWidget/PersonalBudgetWidget";
+import SavingsGoal from '../../components/SavingGoal/SavingGoal';
 
 function Dashboard() {
   // Estados para gastos
@@ -34,40 +35,26 @@ function Dashboard() {
   const [isFixedExpenseDeleted, setIsFixedExpenseDeleted] = useState(false);
   const [isFixedExpenseCreated, setIsFixedExpenseCreated] = useState(false);
 
+  // Estado para el registro mensual y ahorro deseado
   const [monthlyRecord, setMonthlyRecord] = useState(null);
-  const [desiredSavings, setDesiredSavings] = useState(monthlyRecord ? monthlyRecord.desired_savings : 0);
-  const [isInputDisabled, setIsInputDisabled] = useState(true);
+  const [desiredSavings, setDesiredSavings] = useState(0);
 
-  const handleInputChange = (event) => {
-    setDesiredSavings(event.target.value);
+  const handleSavingsChange = (newSavings) => {
+    setDesiredSavings(newSavings);
+    fetch(`http://localhost:8080/api/setDesiredSavings?userId=${user.userId}&month=5&year=2024&desiredSavings=${newSavings}`, {
+      method: 'POST',
+    })
+        .then(response => response.json())
+        .then(data => {
+          fetch(`http://localhost:8080/api/getMonthlyRecord/${user.userId}`)
+              .then((response) => response.json())
+              .then((data) => {
+                setMonthlyRecord(data);
+              })
+              .catch((error) => console.error("Error:", error));
+        })
+        .catch(error => console.error('Error:', error));
   };
-
-  const handleButtonClick = () => {
-    setIsInputDisabled(false);
-  };
-
-const handleSubmit = (event) => {
-  event.preventDefault();
-
-  fetch(`http://localhost:8080/api/setDesiredSavings?userId=${user.userId}&month=5&year=2024&desiredSavings=${desiredSavings}`, {
-    method: 'POST',
-  })
-  .then(response => response.json())
-  .then(data => {
-    // Fetch the monthly record again to update the state
-    fetch(`http://localhost:8080/api/getMonthlyRecord/${user.userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setMonthlyRecord(data);
-        setDesiredSavings(data.desired_savings); // Update desiredSavings state here
-      })
-      .catch((error) => console.error("Error:", error));
-    setIsInputDisabled(true);
-    alert('Se ha cambiado el ahorro objetivo.');
-  })
-  .catch(error => console.error('Error:', error));
-};
-
 
   // Contexto de usuario
   const { user, setUser } = useContext(UserContext);
@@ -93,12 +80,13 @@ const handleSubmit = (event) => {
 
       fetch(`http://localhost:8080/api/getMonthlyRecord/${user.userId}`)
           .then((response) => response.json())
-          .then((data) => setMonthlyRecord(data))
+          .then((data) => {
+            setMonthlyRecord(data);
+            setDesiredSavings(data.desired_savings); // Actualizar el estado de desiredSavings aquí
+          })
           .catch((error) => console.error("Error:", error));
 
-      fetch(
-          `http://localhost:8080/api/expenseListFixedLastMonth/${user.userId}`,
-      )
+      fetch(`http://localhost:8080/api/expenseListFixedLastMonth/${user.userId}`)
           .then((response) => response.json())
           .then((data) => setFixedExpenses(data))
           .catch((error) => console.error("Error:", error));
@@ -127,7 +115,7 @@ const handleSubmit = (event) => {
   ]);
 
   if (!user) {
-    return <div>Usuario no detectado</div>; // Or your loading spinner
+    return <div>Usuario no detectado</div>; // O tu spinner de carga
   }
 
   return (
@@ -171,18 +159,10 @@ const handleSubmit = (event) => {
                 userId={user.userId}
                 setIsFixedExpenseCreated={setIsFixedExpenseCreated}
             />*/}
-            <Box style={{display: "flex", flexDirection: "column"}} className="setSavingsBox">
-              <div>Presupuesto mensual inicial: {monthlyRecord ? monthlyRecord.total_income - monthlyRecord.fixed_expenses - monthlyRecord.desired_savings : 0} €
-              <div>Ahorro deseado {monthlyRecord ? monthlyRecord.desired_savings : 0} €</div>
-              </div>
-              <form onSubmit={handleSubmit}>
-                <input type="number" value={desiredSavings} onChange={handleInputChange} disabled={isInputDisabled} />
-                <button type="button" onClick={handleButtonClick}>Cambiar ahorro objetivo</button>
-                {!isInputDisabled && <button type="submit">Guardar</button>}
-              </form>
-              <div>Presupuesto mensual final: €</div>
-            </Box>
-
+            <SavingsGoal
+                monthlyRecord={monthlyRecord}
+                onSavingsChange={handleSavingsChange}
+            />
           </Box>
           <Box className="rightBar">
             <b>Gastos Diarios</b>
@@ -222,3 +202,4 @@ const handleSubmit = (event) => {
 }
 
 export default Dashboard;
+// Path: frontend/src/pages/Dashboard/Dashboard.js
