@@ -35,6 +35,39 @@ function Dashboard() {
   const [isFixedExpenseCreated, setIsFixedExpenseCreated] = useState(false);
 
   const [monthlyRecord, setMonthlyRecord] = useState(null);
+  const [desiredSavings, setDesiredSavings] = useState(monthlyRecord ? monthlyRecord.desired_savings : 0);
+  const [isInputDisabled, setIsInputDisabled] = useState(true);
+
+  const handleInputChange = (event) => {
+    setDesiredSavings(event.target.value);
+  };
+
+  const handleButtonClick = () => {
+    setIsInputDisabled(false);
+  };
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+
+  fetch(`http://localhost:8080/api/setDesiredSavings?userId=${user.userId}&month=5&year=2024&desiredSavings=${desiredSavings}`, {
+    method: 'POST',
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Fetch the monthly record again to update the state
+    fetch(`http://localhost:8080/api/getMonthlyRecord/${user.userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setMonthlyRecord(data);
+        setDesiredSavings(data.desired_savings); // Update desiredSavings state here
+      })
+      .catch((error) => console.error("Error:", error));
+    setIsInputDisabled(true);
+    alert('Se ha cambiado el ahorro objetivo.');
+  })
+  .catch(error => console.error('Error:', error));
+};
+
 
   // Contexto de usuario
   const { user, setUser } = useContext(UserContext);
@@ -138,14 +171,19 @@ function Dashboard() {
                 userId={user.userId}
                 setIsFixedExpenseCreated={setIsFixedExpenseCreated}
             />*/}
-            <Box style={{display: "flex", flexDirection: "column"}}>
+            <Box style={{display: "flex", flexDirection: "column"}} className="setSavingsBox">
               <div>Presupuesto mensual inicial: {monthlyRecord ? monthlyRecord.total_income - monthlyRecord.fixed_expenses - monthlyRecord.desired_savings : 0} €
+              <div>Ahorro deseado {monthlyRecord ? monthlyRecord.desired_savings : 0} €</div>
               </div>
-              <div>Ahorro objetivo: {monthlyRecord ? monthlyRecord.desired_savings : 0}€</div>
+              <form onSubmit={handleSubmit}>
+                <input type="number" value={desiredSavings} onChange={handleInputChange} disabled={isInputDisabled} />
+                <button type="button" onClick={handleButtonClick}>Cambiar ahorro objetivo</button>
+                {!isInputDisabled && <button type="submit">Guardar</button>}
+              </form>
               <div>Presupuesto mensual final: €</div>
             </Box>
-          </Box>
 
+          </Box>
           <Box className="rightBar">
             <b>Gastos Diarios</b>
             <ExpenseTable

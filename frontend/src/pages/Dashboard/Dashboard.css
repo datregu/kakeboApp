@@ -53,3 +53,11 @@ width: 100%;
   border: 3px dotted yellow; /* Solo para visualizar el contenedor */
   width: 100%;
 }
+.setSavingsBox{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: 3px dotted pink; /* Solo para visualizar el contenedor */
+  width: 100%;
+}
