@@ -26,6 +26,7 @@ import ModalWindowUpdateFixedExpense from "../../components/ModalWindowUpdateFix
 import MoneyWidget from "../../components/MoneyWidget/MoneyWidget";
 import "./FixedExpenseTable.css";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+
 // Definir objetos de estilo reutilizables
 const tableCellStyle = {
     fontSize: "0.8rem",
@@ -60,19 +61,22 @@ function FixedExpenseTable({
         expenseCategory: "FIXED",
     });
 
-    const handleSnackbarClose = (event, reason) => {
-        if (reason === "clickaway") {
-            return;
-        }
-        setSnackbarOpen(false);
-    };
+    // Estado para la actualización del widget
+    const [refreshMoneyWidget, setRefreshMoneyWidget] = useState(false);
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/totalFixedExpensesByLastMonth/${userId}`)
             .then((response) => response.json())
             .then((data) => setTotalFixedExpenses(data))
             .catch((error) => console.error("Error:", error));
-    }, [userId]);
+    }, [userId, refreshMoneyWidget]);
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setSnackbarOpen(false);
+    };
 
     const handleDeleteExpense = (expenseId) => {
         const userConfirmation = window.confirm(
@@ -87,16 +91,17 @@ function FixedExpenseTable({
                         alert("No se ha podido eliminar el gasto");
                     } else {
                         setIsFixedExpenseDeleted((prevState) => !prevState);
-                        //Abrir snackbar de eliminación
+                        // Abrir snackbar de eliminación
                         setSnackbarOpen(true);
+                        // Actualizar MoneyWidget
+                        setRefreshMoneyWidget((prevState) => !prevState);
                         // Cerrar popover
                         handlePopoverClose();
                     }
                 })
                 .catch((error) => {
                     console.error(
-                        "There has been a problem with your fetch operation:",
-                        error,
+                        "Ha ocurrido un error al intentar eliminar el gasto:", error
                     );
                 });
         }
@@ -105,13 +110,13 @@ function FixedExpenseTable({
     const handleOpenModal = (expense) => {
         setExpenseToEdit(expense);
         setIsModalOpen(true);
-        handlePopoverClose(); // Cerrar popover
+        handlePopoverClose();
     };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setExpenseToEdit(null);
-        handlePopoverClose(); // Cerrar popover después de actualizar
+        handlePopoverClose();
     };
 
     const handleRowClick = (event, expense) => {
@@ -148,6 +153,8 @@ function FixedExpenseTable({
                 }
                 setIsCreateModalOpen(false);
                 setIsFixedExpenseUpdated((prevState) => !prevState);
+                // Actualizar MoneyWidget
+                setRefreshMoneyWidget((prevState) => !prevState);
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -225,6 +232,7 @@ function FixedExpenseTable({
                     autoHideDuration={6000}
                     onClose={handleSnackbarClose}
                     message="Se ha eliminado el gasto"
+                    severity="info"
                 />
                 {isModalOpen && (
                     <ModalWindowUpdateFixedExpense
@@ -246,7 +254,7 @@ function FixedExpenseTable({
                             fullWidth
                             variant="standard"
                             value={newExpense.expenseAmount}
-                            onChange={(e) => setNewExpense({...newExpense, expenseAmount: e.target.value})}
+                            onChange={(e) => setNewExpense({ ...newExpense, expenseAmount: e.target.value })}
                         />
                         <TextField
                             margin="dense"
@@ -255,7 +263,7 @@ function FixedExpenseTable({
                             fullWidth
                             variant="standard"
                             value={newExpense.expenseDescription}
-                            onChange={(e) => setNewExpense({...newExpense, expenseDescription: e.target.value})}
+                            onChange={(e) => setNewExpense({ ...newExpense, expenseDescription: e.target.value })}
                         />
                         <TextField
                             margin="dense"
@@ -263,7 +271,7 @@ function FixedExpenseTable({
                             fullWidth
                             variant="standard"
                             value={newExpense.expenseDate}
-                            onChange={(e) => setNewExpense({...newExpense, expenseDate: e.target.value})}
+                            onChange={(e) => setNewExpense({ ...newExpense, expenseDate: e.target.value })}
                         />
                         <TextField
                             margin="dense"
@@ -272,7 +280,7 @@ function FixedExpenseTable({
                             fullWidth
                             variant="standard"
                             value={newExpense.expenseCategory}
-                            onChange={(e) => setNewExpense({...newExpense, expenseCategory: e.target.value})}
+                            onChange={(e) => setNewExpense({ ...newExpense, expenseCategory: e.target.value })}
                         >
                             <MenuItem value="FIXED">Fixed</MenuItem>
                         </TextField>

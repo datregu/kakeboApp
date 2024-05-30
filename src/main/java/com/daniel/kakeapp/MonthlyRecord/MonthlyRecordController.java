@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,6 +17,12 @@ public class MonthlyRecordController {
     @GetMapping("/getMonthlyRecord/{userId}")
     public MonthlyRecordEntity getMonthlyRecord(@PathVariable Integer userId) {
         return monthlyRecordService.getLatestMonthlyRecord(userId);
+    }
+
+
+    @GetMapping("/getAllMonthlyRecords/{userId}")
+    public List<MonthlyRecordEntity> getAllMonthlyRecords(@PathVariable Integer userId) {
+        return monthlyRecordService.getAllMonthlyRecordsByUserId(userId);
     }
 
     @PostMapping("/setDesiredSavings")

@@ -43,6 +43,8 @@ function Dashboard() {
   // Contexto de usuario
   const { user, setUser } = useContext(UserContext);
 
+
+  // Llamadas a la API
   const { data: expensesData, loading: loadingExpenses, error: errorExpenses } = useFetch(`/expenseList/${user ? user.userId : ''}`, [user, isExpenseCreated, isExpenseUpdated, isExpenseDeleted]);
   const { data: incomesData, loading: loadingIncomes, error: errorIncomes } = useFetch(`/incomeListByMonth/${user ? user.userId : ''}`, [user, isIncomeCreated, isIncomeUpdated, isIncomeDeleted]);
   const { data: monthlyRecordData, loading: loadingMonthlyRecord, error: errorMonthlyRecord } = useFetch(`/getMonthlyRecord/${user ? user.userId : ''}`, [user]);

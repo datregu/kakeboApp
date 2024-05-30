@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Service
@@ -34,7 +35,6 @@ public class MonthlyRecordService {
     // Guardar el registro mensual actualizado en la base de datos
     monthlyRecordRepo.save(monthlyRecord);
 }
-
 
     public MonthlyRecordEntity addMonthlyRecord(Integer userId, BigDecimal desiredSavings) {
         // Obtener el total de ingresos para el mes actual
@@ -104,6 +104,9 @@ public class MonthlyRecordService {
     return monthlyRecord;
 }
 
+    public List<MonthlyRecordEntity> getAllMonthlyRecordsByUserId(Integer userId) {
+        return monthlyRecordRepo.findAllByUserId(userId);
+    }
     /*public MonthlyRecordEntity getAndUpdateMonthlyRecord(int month, int year, Integer userId) {
         // Buscar el registro mensual para el usuario, mes y año dados
         MonthlyRecordEntity monthlyRecord = monthlyRecordRepo.findByUserAndMonthAndYear(userId, month, year);

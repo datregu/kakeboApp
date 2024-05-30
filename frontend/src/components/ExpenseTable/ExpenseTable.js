@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
     Table,
     TableBody,
@@ -22,10 +22,8 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import ModalWindow from "../../components/ModalWindowUpdateExpense/ModalWindow";
-import {AwesomeButton} from "react-awesome-button";
-import "react-awesome-button/dist/styles.css";
 import MoneyWidget from "../../components/MoneyWidget/MoneyWidget";
-import {Box} from "@mui/material";
+import { Box } from "@mui/material";
 import "./ExpenseTable.css";
 
 function formatCategory(category) {
@@ -43,10 +41,10 @@ const categoryColors = {
 };
 
 const categories = [
-    {value: "SUPERVIVENCIA", label: "Supervivencia"},
-    {value: "OCIO_Y_VICIO", label: "Ocio y Vicio"},
-    {value: "CULTURA", label: "Cultura"},
-    {value: "EXTRAS", label: "Extras"},
+    { value: "SUPERVIVENCIA", label: "Supervivencia" },
+    { value: "OCIO_Y_VICIO", label: "Ocio y Vicio" },
+    { value: "CULTURA", label: "Cultura" },
+    { value: "EXTRAS", label: "Extras" },
 ];
 
 const tableCellStyle = {
@@ -85,6 +83,8 @@ function ExpenseTable({
     });
     const [monthlyRecord, setMonthlyRecord] = useState(null);
 
+    const [refreshMoneyWidget, setRefreshMoneyWidget] = useState(false);
+
     useEffect(() => {
         if (isExpenseCreated) {
             fetch(`http://localhost:8080/api/expenseList/${userId}`)
@@ -99,7 +99,7 @@ function ExpenseTable({
             .then((response) => response.json())
             .then((data) => setMonthlyRecord(data))
             .catch((error) => console.error("Error:", error));
-    }, [userId]);
+    }, [userId, refreshMoneyWidget]);
 
     const handleSnackbarClose = (event, reason) => {
         if (reason === "clickaway") {
@@ -110,7 +110,7 @@ function ExpenseTable({
 
     const handleDeleteExpense = (expenseId) => {
         const userConfirmation = window.confirm(
-            "¿Estás seguro de que quieres borrar este gasto?",
+            "¿Estás seguro de que quieres borrar este gasto?"
         );
         if (userConfirmation) {
             fetch(`http://localhost:8080/api/delete/${expenseId}`, {
@@ -122,11 +122,13 @@ function ExpenseTable({
                     }
                     setIsExpenseDeleted((prevState) => !prevState);
                     setSnackbarOpen(true);
+                    setRefreshMoneyWidget((prevState) => !prevState); // Trigger refresh
+                    handlePopoverClose();
                 })
                 .catch((error) => {
                     console.error(
                         "There has been a problem with your fetch operation:",
-                        error,
+                        error
                     );
                 });
         }
@@ -174,6 +176,7 @@ function ExpenseTable({
                 }
                 setIsCreateModalOpen(false);
                 setIsExpenseUpdated((prevState) => !prevState);
+                setRefreshMoneyWidget((prevState) => !prevState); // Trigger refresh
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -270,14 +273,14 @@ function ExpenseTable({
                         horizontal: "center",
                     }}
                 >
-                    <div style={{display: "flex", padding: "10px"}}>
+                    <div style={{ display: "flex", padding: "10px" }}>
                         <IconButton onClick={() => handleOpenModal(expenseToEdit)}>
-                            <EditOutlinedIcon style={{color: "black"}}/>
+                            <EditOutlinedIcon style={{ color: "black" }} />
                         </IconButton>
                         <IconButton
                             onClick={() => handleDeleteExpense(expenseToEdit.expenseId)}
                         >
-                            <DeleteOutlineOutlinedIcon style={{color: "black"}}/>
+                            <DeleteOutlineOutlinedIcon style={{ color: "black" }} />
                         </IconButton>
                     </div>
                 </Popover>
@@ -306,7 +309,7 @@ function ExpenseTable({
                             type="number"
                             fullWidth
                             value={newExpense.expenseAmount}
-                            onChange={(e) => setNewExpense({...newExpense, expenseAmount: e.target.value})}
+                            onChange={(e) => setNewExpense({ ...newExpense, expenseAmount: e.target.value })}
                         />
                         <TextField
                             margin="dense"
@@ -314,14 +317,14 @@ function ExpenseTable({
                             type="text"
                             fullWidth
                             value={newExpense.expenseDescription}
-                            onChange={(e) => setNewExpense({...newExpense, expenseDescription: e.target.value})}
+                            onChange={(e) => setNewExpense({ ...newExpense, expenseDescription: e.target.value })}
                         />
                         <TextField
                             margin="dense"
                             type="date"
                             fullWidth
                             value={newExpense.expenseDate}
-                            onChange={(e) => setNewExpense({...newExpense, expenseDate: e.target.value})}
+                            onChange={(e) => setNewExpense({ ...newExpense, expenseDate: e.target.value })}
                         />
                         <TextField
                             margin="dense"
@@ -329,7 +332,7 @@ function ExpenseTable({
                             select
                             fullWidth
                             value={newExpense.expenseCategory}
-                            onChange={(e) => setNewExpense({...newExpense, expenseCategory: e.target.value})}
+                            onChange={(e) => setNewExpense({ ...newExpense, expenseCategory: e.target.value })}
                         >
                             {categories.map((option) => (
                                 <MenuItem key={option.value} value={option.value}>
@@ -369,7 +372,7 @@ function ExpenseTable({
                             backgroundColor: "#743D2B",
                         }
                     }}
-                    startIcon={<AddCircleOutlineIcon/>}
+                    startIcon={<AddCircleOutlineIcon />}
                     onClick={() => setIsCreateModalOpen(true)}
                 >
                     Añadir Gasto
@@ -378,7 +381,6 @@ function ExpenseTable({
                     amount={monthlyRecord ? monthlyRecord.total_expense : 0}
                 />
             </Box>
-
         </>
     );
 }
