@@ -6,7 +6,7 @@ const PersonalBudgetWidget = ({ amount }) => {
     const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
     const daysRemaining = (lastDayOfMonth - currentDate) / (1000 * 60 * 60 * 24);
     const weeksRemaining = daysRemaining / 7;
-    const weeklyBudget = amount / daysRemaining;
+    const weeklyBudget = amount / 4
 
     return (
         <Paper
@@ -28,7 +28,7 @@ const PersonalBudgetWidget = ({ amount }) => {
                         €{amount.toFixed(2)}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                        Ingresos Totales
+                        Presupuesto Mensual
                     </Typography>
                 </Box>
             </Box>

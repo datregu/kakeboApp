@@ -58,7 +58,7 @@ const SavingGoal = ({ monthlyRecord, onSavingsChange }) => {
                     ) : (
                         <>
                             <div>
-                              Presupuesto mensual inicial: {monthlyRecord ? (monthlyRecord.total_income - monthlyRecord.fixed_expenses - desiredSavings).toFixed(2) : 0} €
+                              Presupuesto mensual inicial: {monthlyRecord ? (monthlyRecord.total_income - monthlyRecord.fixed_expenses).toFixed(2) : 0} €
                                 <div>Ahorro deseado: {desiredSavings} €</div>
                             </div>
                             <Button variant="outlined" onClick={handleButtonClick}>Cambiar ahorro objetivo</Button>
@@ -66,7 +66,7 @@ const SavingGoal = ({ monthlyRecord, onSavingsChange }) => {
                     )}
                 </>
             )}
-            <div>Presupuesto mensual final: {monthlyRecord ? (monthlyRecord.total_income - monthlyRecord.fixed_expenses).toFixed(2) : 0} €</div>
+            <div>Presupuesto mensual final: {monthlyRecord ? (monthlyRecord.total_income - monthlyRecord.fixed_expenses - desiredSavings).toFixed(2) : 0} €</div>
         </Box>
     );
 };

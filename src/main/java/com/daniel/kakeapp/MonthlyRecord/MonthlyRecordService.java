@@ -159,5 +159,11 @@ public void setFixedExpenses (int userId, int month, int year, BigDecimal fixedE
     monthlyRecordRepo.save(monthlyRecord);
 
 }*/
-
+public MonthlyRecordEntity getLatestMonthlyRecordByUserId(Integer userId) {
+    List<MonthlyRecordEntity> records = monthlyRecordRepo.findLatestMonthlyRecordByUserId(userId);
+    if (records.isEmpty()) {
+        throw new IllegalArgumentException("No se encontró un registro mensual para el usuario dado");
+    }
+    return records.get(0);
+}
 }

@@ -23,4 +23,8 @@ public interface IncomeRepository extends JpaRepository<IncomeEntity, Integer>{
     // Método para buscar el total de ingresos del mes más reciente por usuario
     @Query ("SELECT SUM(i.incomeAmount) FROM IncomeEntity i WHERE i.user.userId = :userId AND MONTH(i.incomeDate) = (SELECT MONTH(MAX(i.incomeDate)) FROM IncomeEntity i WHERE i.user.userId = :userId)")
     Optional<BigDecimal> findTotalIncomesByLastMonth(@Param("userId") Integer userId);
+
+    // Método para buscar la lista de ingresos del mes más reciente por usuario
+    @Query("SELECT i FROM IncomeEntity i WHERE i.user.userId = :userId AND MONTH(i.incomeDate) = (SELECT MONTH(MAX(i.incomeDate)) FROM IncomeEntity i WHERE i.user.userId = :userId)")
+List<IncomeEntity> findIncomesByUserIdAndLastMonth(@Param("userId") Integer userId);
 }

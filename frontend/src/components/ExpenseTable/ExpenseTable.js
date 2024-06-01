@@ -87,7 +87,7 @@ function ExpenseTable({
 
     useEffect(() => {
         if (isExpenseCreated) {
-            fetch(`http://localhost:8080/api/expenseList/${userId}`)
+            fetch(`http://localhost:8080/api/lastMonthExpenseList/${userId}`)
                 .then((response) => response.json())
                 .then((data) => setExpenses(data))
                 .catch((error) => console.error("Error:", error));

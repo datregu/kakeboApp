@@ -9,48 +9,52 @@ import MonthlyRecord from "../../components/MonthRecord/MonthlyRecord";
 import FixedExpenseTable from "../../components/FixedExpenseTable/FixedExpenseTable";
 import UserContext from "../../components/UserContext/UserContext";
 import MoneyWidget from "../../components/MoneyWidget/MoneyWidget";
-import style from "./Dashboard.css"; // Asegúrate de que esta importación se use correctamente
+import style from "./Dashboard.css"; // Ensure this import is correct
 import AddFixedExpense from "../../components/AddFixedExpense/AddFixedExpense";
 import PersonalBudgetWidget from "../../components/PersonalBudgetWidget/PersonalBudgetWidget";
 import SavingsGoal from '../../components/SavingGoal/SavingGoal';
 import { useFetch, postData } from '../../services/useFetch';
+import AnualRecord from '../../components/AnualRecord/AnualRecord';
 
 function Dashboard() {
-  // Estados para gastos
+  // States for expenses
   const [expenses, setExpenses] = useState([]);
   const [isExpenseCreated, setIsExpenseCreated] = useState(false);
   const [isExpenseUpdated, setIsExpenseUpdated] = useState(false);
   const [isExpenseDeleted, setIsExpenseDeleted] = useState(false);
   const [totalExpenseMonth, setTotalExpenseMonth] = useState(0);
 
-  // Estados para ingresos
+  // States for incomes
   const [incomes, setIncomes] = useState([]);
   const [isIncomeUpdated, setIsIncomeUpdated] = useState(false);
   const [isIncomeDeleted, setIsIncomeDeleted] = useState(false);
   const [isIncomeCreated, setIsIncomeCreated] = useState(false);
   const [totalIncomeMonth, setTotalIncomeMonth] = useState(0);
 
-  // Estados para gastos fijos
+  // States for fixed expenses
   const [fixedExpenses, setFixedExpenses] = useState([]);
   const [isFixedExpenseUpdated, setIsFixedExpenseUpdated] = useState(false);
   const [isFixedExpenseDeleted, setIsFixedExpenseDeleted] = useState(false);
   const [isFixedExpenseCreated, setIsFixedExpenseCreated] = useState(false);
 
-  // Estado para el registro mensual y ahorro deseado
+  // State for the monthly record and desired savings
   const [monthlyRecord, setMonthlyRecord] = useState(null);
   const [desiredSavings, setDesiredSavings] = useState(0);
 
-  // Contexto de usuario
+  // State for annual records
+  const [monthlyRecords, setMonthlyRecords] = useState([]);
+
+  // User context
   const { user, setUser } = useContext(UserContext);
 
-
-  // Llamadas a la API
-  const { data: expensesData, loading: loadingExpenses, error: errorExpenses } = useFetch(`/expenseList/${user ? user.userId : ''}`, [user, isExpenseCreated, isExpenseUpdated, isExpenseDeleted]);
-  const { data: incomesData, loading: loadingIncomes, error: errorIncomes } = useFetch(`/incomeListByMonth/${user ? user.userId : ''}`, [user, isIncomeCreated, isIncomeUpdated, isIncomeDeleted]);
+  // API Calls
+  const { data: expensesData, loading: loadingExpenses, error: errorExpenses } = useFetch(`/lastMonthExpenseList/${user ? user.userId : ''}`, [user, isExpenseCreated, isExpenseUpdated, isExpenseDeleted]);
+  const { data: incomesData, loading: loadingIncomes, error: errorIncomes } = useFetch(`/incomeListLastMonth/${user ? user.userId : ''}`, [user, isIncomeCreated, isIncomeUpdated, isIncomeDeleted]);
   const { data: monthlyRecordData, loading: loadingMonthlyRecord, error: errorMonthlyRecord } = useFetch(`/getMonthlyRecord/${user ? user.userId : ''}`, [user]);
   const { data: fixedExpensesData, loading: loadingFixedExpenses, error: errorFixedExpenses } = useFetch(`/expenseListFixedLastMonth/${user ? user.userId : ''}`, [user, isFixedExpenseCreated, isFixedExpenseUpdated, isFixedExpenseDeleted]);
   const { data: totalExpenseMonthData, loading: loadingTotalExpenseMonth, error: errorTotalExpenseMonth } = useFetch(`/totalExpenseByLastMonth/${user ? user.userId : ''}`, [user]);
   const { data: totalIncomeMonthData, loading: loadingTotalIncomeMonth, error: errorTotalIncomeMonth } = useFetch(`/totalIncomeByLastMonth/${user ? user.userId : ''}`, [user]);
+  const { data: monthlyRecordsData, loading: loadingMonthlyRecords, error: errorMonthlyRecords } = useFetch(`/getAllMonthlyRecords/${user ? user.userId : ''}`, [user]);
 
   useEffect(() => {
     if (expensesData) setExpenses(expensesData);
@@ -79,9 +83,13 @@ function Dashboard() {
     if (totalIncomeMonthData) setTotalIncomeMonth(totalIncomeMonthData);
   }, [totalIncomeMonthData]);
 
+  useEffect(() => {
+    if (monthlyRecordsData) setMonthlyRecords(monthlyRecordsData);
+  }, [monthlyRecordsData]);
+
   const handleSavingsChange = (newSavings) => {
     setDesiredSavings(newSavings);
-    postData(`/setDesiredSavings?userId=${user.userId}&month=5&year=2024&desiredSavings=${newSavings}`, {})
+    postData(`/setDesiredSavings?userId=${user.userId}&month=6&year=2024&desiredSavings=${newSavings}`, {})
         .then(() => fetch(`/getMonthlyRecord/${user.userId}`))
         .then((response) => response.json())
         .then((data) => {
@@ -95,18 +103,18 @@ function Dashboard() {
     if (storedUser) {
       setUser(storedUser);
     }
-  }, []);
+  }, [setUser]);
 
   if (!user) {
-    return <div>Usuario no detectado</div>; // O tu spinner de carga
+    return <div>Usuario no detectado</div>; // Or your loading spinner
   }
 
-  if (loadingExpenses || loadingIncomes || loadingMonthlyRecord || loadingFixedExpenses || loadingTotalExpenseMonth || loadingTotalIncomeMonth) {
+  if (loadingExpenses || loadingIncomes || loadingMonthlyRecord || loadingFixedExpenses || loadingTotalExpenseMonth || loadingTotalIncomeMonth || loadingMonthlyRecords) {
     return <div>Cargando datos...</div>;
   }
 
-  if (errorExpenses || errorIncomes || errorMonthlyRecord || errorFixedExpenses || errorTotalExpenseMonth || errorTotalIncomeMonth) {
-    return <div>Error al cargar los datos.</div>;
+  if (errorExpenses || errorIncomes || errorMonthlyRecord || errorFixedExpenses || errorTotalExpenseMonth || errorTotalIncomeMonth || errorMonthlyRecords) {
+    return <div>Error al cargar los datos de la API</div>;
   }
 
   return (
@@ -134,10 +142,10 @@ function Dashboard() {
             />
             <Box className="incomeResume">
               {/* <AddIncome
-                userId={user.userId}
-                setIsIncomeCreated={setIsIncomeCreated}
-            />
-            <MoneyWidget amount={totalIncomeMonth} />*/}
+              userId={user.userId}
+              setIsIncomeCreated={setIsIncomeCreated}
+          />
+          <MoneyWidget amount={totalIncomeMonth} />*/}
             </Box>
             <b>Gastos Fijos</b>
             <FixedExpenseTable
@@ -147,9 +155,9 @@ function Dashboard() {
                 setIsFixedExpenseDeleted={setIsFixedExpenseDeleted}
             />
             {/* <AddFixedExpense
-              userId={user.userId}
-              setIsFixedExpenseCreated={setIsFixedExpenseCreated}
-          />*/}
+            userId={user.userId}
+            setIsFixedExpenseCreated={setIsFixedExpenseCreated}
+        />*/}
             <SavingsGoal
                 monthlyRecord={monthlyRecord}
                 onSavingsChange={handleSavingsChange}
@@ -166,17 +174,17 @@ function Dashboard() {
                 setExpenses={setExpenses}
             />
             {/* <Box className="expenseResume">
-            <AddExpense
-                userId={user.userId}
-                setIsExpenseCreated={setIsExpenseCreated}
-            />
-            <MoneyWidget
-                amount={monthlyRecord ? monthlyRecord.total_expense : 0}
-            />
-          </Box>*/}
+          <AddExpense
+              userId={user.userId}
+              setIsExpenseCreated={setIsExpenseCreated}
+          />
+          <MoneyWidget
+              amount={monthlyRecord ? monthlyRecord.total_expense : 0}
+          />
+        </Box>*/}
             <Box className="monthlyRecord">
-              <MonthlyRecord record={monthlyRecord} />
-              <PersonalBudgetWidget
+               <MonthlyRecord record={monthlyRecord} />
+             <PersonalBudgetWidget
                   amount={
                     monthlyRecord
                         ? monthlyRecord.total_income -
@@ -185,6 +193,7 @@ function Dashboard() {
                         : 0
                   }
               />
+              <AnualRecord records={monthlyRecords} />
             </Box>
           </Box>
         </Box>

@@ -65,4 +65,8 @@ public void updateIncome(Integer incomeId, IncomeEntity incomeEntity) {
     public BigDecimal findTotalIncomesByLastMonth(Integer userId) {
         return incomeRepo.findTotalIncomesByLastMonth(userId).orElse(BigDecimal.ZERO);
     }
+
+    public List<IncomeEntity> listIncomesLastMonth(Integer userId) {
+    return incomeRepo.findIncomesByUserIdAndLastMonth(userId);
+}
 }

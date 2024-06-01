@@ -2,6 +2,7 @@ package com.daniel.kakeapp.MonthlyRecord;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -12,4 +13,8 @@ public interface MonthlyRecordRepository extends JpaRepository<MonthlyRecordEnti
     // Método para buscar todos los registros mensuales de un usuario
     @Query("SELECT m FROM MonthlyRecordEntity m WHERE m.user.userId = :userId")
     List<MonthlyRecordEntity> findAllByUserId(Integer userId);
+
+    // Método para buscar el último registro mensual de un usuario
+    @Query("SELECT m FROM MonthlyRecordEntity m WHERE m.user.userId = :userId ORDER BY m.year DESC, m.month DESC")
+List<MonthlyRecordEntity> findLatestMonthlyRecordByUserId(@Param("userId") Integer userId);
 }

@@ -13,12 +13,13 @@ import java.util.Optional;
 
 @Repository
 public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Integer> {
+
     // Método para buscar por categoria
     List<ExpenseEntity> findByExpenseCategory(ExpenseCategory category);
 
     // Método para buscar por mes
     @Query("SELECT e FROM ExpenseEntity e WHERE MONTH(e.expenseDate) = :month")
-List<ExpenseEntity> findByExpenseMonth(@Param("month") int month);
+    List<ExpenseEntity> findByExpenseMonth(@Param("month") int month);
 
     // Método para que devuelva el total de gastos de un mes
     @Query("SELECT SUM(e.expenseAmount) FROM ExpenseEntity e WHERE MONTH(e.expenseDate) = :month")
@@ -36,9 +37,12 @@ List<ExpenseEntity> findByExpenseMonth(@Param("month") int month);
     @Query("SELECT SUM(e.expenseAmount) FROM ExpenseEntity e WHERE e.user.userId = :userId AND e.expenseCategory = :category AND MONTH(e.expenseDate) = (SELECT MONTH(MAX(e.expenseDate)) FROM ExpenseEntity e WHERE e.user.userId = :userId)")
     Optional<BigDecimal> findTotalExpensesByCategoryAndLastMonth(@Param("userId") Integer userId, @Param("category") ExpenseCategory category);
 
-    // ExpenseRepository.java
+    // Método para buscar el total de gastos fijos del mes más reciente por usuario
     @Query("SELECT SUM(e.expenseAmount) FROM ExpenseEntity e WHERE e.user.userId = :userId AND e.expenseCategory = 'FIXED' AND MONTH(e.expenseDate) = (SELECT MAX(MONTH(e.expenseDate)) FROM ExpenseEntity e WHERE e.user.userId = :userId AND e.expenseCategory = 'FIXED')")
     Optional<BigDecimal> findTotalFixedExpensesByLastMonth(@Param("userId") Integer userId);
 
+    // Método para buscar la lista de gastos de un usuario del mes más reciente
+    @Query("SELECT e FROM ExpenseEntity e WHERE e.user.userId = :userId AND MONTH(e.expenseDate) = (SELECT MONTH(MAX(e.expenseDate)) FROM ExpenseEntity e WHERE e.user.userId = :userId)")
+    List<ExpenseEntity> findExpensesByUserIdAndLastMonth(@Param("userId") Integer userId);
 
 }

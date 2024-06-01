@@ -20,41 +20,40 @@ public class ExpenseController {
         this.expenseService = expenseService;
     }
 
+    //Crear un gasto para un usuario
     @PostMapping("/createExpense/{userId}")
     public void createExpense(@PathVariable Integer userId, @RequestBody ExpenseEntity expenseEntity) {
         expenseService.createExpense(expenseEntity, userId);
     }
 
+    //Actualizar un gasto por su id
     @PutMapping("/updateExpense/{expenseId}")
     public void updateExpense(@PathVariable Integer expenseId, @RequestBody ExpenseEntity expenseEntity) {
         expenseService.updateExpense(expenseId, expenseEntity);
     }
 
+    //Devuelve una lista de gastos de un usuario
     @GetMapping("/expenseList/{userId}")
     @ResponseBody
     public List<ExpenseEntity> listExpenses(@PathVariable Integer userId) {
         return expenseService.listExpensesExcludeFixed(userId);
     }
 
-    /* Método para eliminar un gasto en la base de datos por su expenseId */
+    //Borrar un gasto por su id
     @DeleteMapping("/delete/{expenseId}")
     public void deleteExpense(@PathVariable Integer expenseId) {
 
         expenseService.deleteExpense(expenseId);
     }
 
-
-    /* Método para buscar por categoria
-     * Para llamar a este método, se debe hacer una petición GET a /expense/listByCategory?category=CATEGORY
-     *  */
+    // Devuelve una lista de gastos de una categoría específica
     @GetMapping("/listByCategory")
     @ResponseBody
     public List<ExpenseEntity> listExpensesByCategory(@RequestParam ExpenseCategory category) {
         return expenseService.findExpensesByCategory(category);
     }
 
-    // Método para buscar por mes
-    // Para llamar a este método, se debe hacer una petición GET a /expense/listByMonth?month=MONTH
+    // Método para buscar por mes, devuelve una lista de gastos de un mes específico de TODOS los usuarios
     @GetMapping("/listByMonth")
     @ResponseBody
     public List<ExpenseEntity> listExpensesByMonth(@RequestParam int month) {
@@ -62,7 +61,6 @@ public class ExpenseController {
     }
 
     // Método para devolver el total de gastos de un mes
-    // Para llamar a este método, se debe hacer una petición GET a /expense/totalByMonth?month=MONTH
     @GetMapping("/totalExpenseByMonth")
     @ResponseBody
     public BigDecimal totalExpensesByMonth(@RequestParam int month) {
@@ -75,20 +73,24 @@ public class ExpenseController {
     public List<ExpenseEntity> listExpensesOnlyFixedLastMonth(@PathVariable Integer userId) {
         return expenseService.listExpensesOnlyFixedLastMonth(userId);
     }
-
+    // Devuelve el total de gastos del ultimo mes por usuario
     @GetMapping("/totalExpenseByLastMonth/{userId}")
     @ResponseBody
     public BigDecimal findTotalExpensesByUserIdAndMonth(@PathVariable Integer userId) {
         return expenseService.findTotalExpensesByLastMonth(userId);
     }
-    // ExpenseController.java
+    // Devuelve el total de gastos FIJOS del ultimo mes por usuario
     @GetMapping("/totalFixedExpensesByLastMonth/{userId}")
     @ResponseBody
     public BigDecimal totalFixedExpensesByLastMonth(@PathVariable Integer userId) {
         return expenseService.findTotalFixedExpensesByLastMonth(userId);
     }
 
-
+@GetMapping("/lastMonthExpenseList/{userId}")
+@ResponseBody
+public List<ExpenseEntity> listExpensesExcludeFixedLastMonth(@PathVariable Integer userId) {
+    return expenseService.listExpensesExcludeFixedLastMonth(userId);
+}
 
 }
 

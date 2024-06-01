@@ -123,4 +123,10 @@ public List<ExpenseEntity> listExpensesExcludeFixed(Integer userId) {
     }
 
 
+    public List<ExpenseEntity> listExpensesExcludeFixedLastMonth(Integer userId) {
+    List<ExpenseEntity> expenses = expenseRepo.findExpensesByUserIdAndLastMonth(userId);
+    expenses.removeIf(expense -> expense.getExpenseCategory() == ExpenseCategory.FIXED);
+    return expenses;
+}
+
 }
