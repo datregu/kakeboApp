@@ -67,7 +67,7 @@ public class ExpenseController {
         return expenseService.findTotalExpensesByMonth(month);
     }
 
-    // Método para devolver el total de gastos FIJOS del ultimo mes
+    // Método para devolver la lista de gastos FIJOS del ultimo mes
     @GetMapping("/expenseListFixedLastMonth/{userId}")
     @ResponseBody
     public List<ExpenseEntity> listExpensesOnlyFixedLastMonth(@PathVariable Integer userId) {
@@ -90,6 +90,13 @@ public class ExpenseController {
 @ResponseBody
 public List<ExpenseEntity> listExpensesExcludeFixedLastMonth(@PathVariable Integer userId) {
     return expenseService.listExpensesExcludeFixedLastMonth(userId);
+}
+
+
+@GetMapping("/fixedExpenseListLastMonth/{userId}")
+@ResponseBody
+public List<ExpenseEntity> listFixedExpensesLastMonth(@PathVariable Integer userId) {
+    return expenseService.listFixedExpensesLastMonth(userId);
 }
 
 }

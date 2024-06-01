@@ -1,18 +1,11 @@
 import React from "react";
+import headerImage from './header1.png';
+import './Header.css';
 
 function Header() {
   return (
-    <header
-      style={{
-        textAlign: "center",
-        verticalAlign: "middle",
-        lineHeight: "50px",
-        backgroundColor: "#90553c",
-        color: "white",
-        height: "50px",
-      }}
-    >
-      <h1 style={{ backgroundColor: "#90553c" }}>KakeboApp</h1>
+       <header>
+<img src={headerImage} alt="KakeboApp logo" style={{width: '100%', height: 'auto'}}/>
     </header>
   );
 }

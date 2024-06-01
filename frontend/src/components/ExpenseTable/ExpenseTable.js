@@ -21,6 +21,7 @@ import {
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import MenuIcon from '@mui/icons-material/Menu';
 import ModalWindow from "../../components/ModalWindowUpdateExpense/ModalWindow";
 import MoneyWidget from "../../components/MoneyWidget/MoneyWidget";
 import { Box } from "@mui/material";
@@ -201,10 +202,11 @@ function ExpenseTable({
                 <Table size="small" stickyHeader>
                     <TableHead className="table-head">
                         <TableRow>
-                            <TableCell sx={tableHeadStyle}>Categoría</TableCell>
-                            <TableCell sx={tableHeadStyle}>Descripción</TableCell>
                             <TableCell sx={tableHeadStyle}>Fecha</TableCell>
+                            <TableCell sx={tableHeadStyle}>Descripción</TableCell>
                             <TableCell sx={tableHeadStyle}>Cantidad</TableCell>
+                            <TableCell sx={tableHeadStyle}>Categoría</TableCell>
+                            <TableCell sx={tableHeadStyle}></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -228,7 +230,7 @@ function ExpenseTable({
                                                 backgroundColor: color,
                                             }}
                                         >
-                                            {category}
+                                            {expense.expenseDate}
                                         </TableCell>
                                         <TableCell
                                             style={{
@@ -244,7 +246,7 @@ function ExpenseTable({
                                                 backgroundColor: color,
                                             }}
                                         >
-                                            {expense.expenseDate}
+                                            {expense.expenseAmount} €
                                         </TableCell>
                                         <TableCell
                                             style={{
@@ -252,7 +254,15 @@ function ExpenseTable({
                                                 backgroundColor: color,
                                             }}
                                         >
-                                            {expense.expenseAmount} €
+                                         {category}
+                                        </TableCell>
+                                        <TableCell
+                                            style={{
+                                                ...tableCellStyle,
+                                                backgroundColor: color,
+                                            }}
+                                        >
+                                            <MenuIcon/>
                                         </TableCell>
                                     </TableRow>
                                 );

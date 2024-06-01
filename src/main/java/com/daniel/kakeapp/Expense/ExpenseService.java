@@ -129,4 +129,8 @@ public List<ExpenseEntity> listExpensesExcludeFixed(Integer userId) {
     return expenses;
 }
 
+public List<ExpenseEntity> listFixedExpensesLastMonth(Integer userId) {
+    return expenseRepo.findFixedExpensesByUserIdAndLastMonth(userId);
+}
+
 }

@@ -6,7 +6,25 @@ const PersonalBudgetWidget = ({ amount }) => {
     const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
     const daysRemaining = (lastDayOfMonth - currentDate) / (1000 * 60 * 60 * 24);
     const weeksRemaining = daysRemaining / 7;
-    const weeklyBudget = amount / 4
+
+
+    function calculeWeeklyButget(amount) {
+        const now = new Date();
+        const start = new Date(now.getFullYear(), now.getMonth(), 1);
+        const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        let day = start.getDay();
+        start.setDate(start.getDate() - day + (day == 0 ? -6 : 1));
+        let weeks = 0;
+        while (start <= end) {
+            weeks++;
+            start.setDate(start.getDate() + 7);
+        }
+        const weeklyBudget = amount / weeks;
+        return weeklyBudget;
+    }
+    const weeklyBudget = calculeWeeklyButget(amount);
+
+    console.log(weeklyBudget);
 
     return (
         <Paper
@@ -16,6 +34,7 @@ const PersonalBudgetWidget = ({ amount }) => {
                 borderRadius: '10px',
                 backgroundColor: '#f5f5f5',
                 textAlign: 'center',
+                width: "50%"
             }}
         >
             <Typography variant="h6" component="h2" sx={{ color: '#1976d2' }}>

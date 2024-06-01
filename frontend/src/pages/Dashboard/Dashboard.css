@@ -1,19 +1,35 @@
+.cabin-sketch-regular {
+  font-family: "Cabin Sketch", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.cabin-sketch-bold {
+  font-family: "Cabin Sketch", sans-serif !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  font-size: 30px !important;
+  color: #482e1d !important;
+  text-align: left !important;
+}
+
+
 .containerDashboard {
   display: flex;
   flex-direction: row;
   vertical-align: middle;
   justify-content: space-between;
-  border: 3px solid purple; /* Solo para visualizar el contenedor */
+  //border: 3px solid purple; /* Solo para visualizar el contenedor */
   height: 100%;
 }
 .leftBar {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
-  border: 3px dotted green; /* Solo para visualizar el contenedor */
+  //border: 3px dotted green; /* Solo para visualizar el contenedor */
   width: 30%;
-  margin: 2% 2% 2% 4%;
+  margin: 0% 2% 2% 4%;
 }
 .expenseTableContainer {
   display: flex;
@@ -25,7 +41,7 @@
 
 .rightBar {
   width: 200%; /* Limita el ancho del componente AddExpense */
-  margin: 2% 4% 2% 2%;
+  margin: 0% 4% 2% 2%;
   //border: 3px solid orange; /* Solo para visualizar el contenedor */
   height: 100%;
 }
@@ -45,19 +61,20 @@ width: 100%;
   //border: 3px dotted blue; /* Solo para visualizar el contenedor */
   width: 100%;
 }
-.monthlyRecord {
+.resumeBox {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  border: 3px dotted yellow; /* Solo para visualizar el contenedor */
+  border: 3px dotted yellow;
   width: 100%;
+  height: 20%;
 }
 .setSavingsBox{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  border: 3px dotted pink; /* Solo para visualizar el contenedor */
+  border: 3px dotted pink;
   width: 100%;
 }

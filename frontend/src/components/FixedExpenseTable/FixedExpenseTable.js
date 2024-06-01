@@ -22,6 +22,7 @@ import {
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import MenuIcon from '@mui/icons-material/Menu';
 import ModalWindowUpdateFixedExpense from "../../components/ModalWindowUpdateFixedExpense/ModalWindowUpdateFixedExpense";
 import MoneyWidget from "../../components/MoneyWidget/MoneyWidget";
 import "./FixedExpenseTable.css";
@@ -168,10 +169,12 @@ function FixedExpenseTable({
         <>
             <TableContainer
                 component={Paper}
-                className="fixed-expense-table"
+                className="income-table"
                 style={{
                     width: "100%",
                     height: tableSize?.height || "100%",
+                    border: "3px solid #a3966a",
+                    borderRadius: "10px",
                 }}
             >
                 <Table size="small">
@@ -199,7 +202,7 @@ function FixedExpenseTable({
                                 <TableCell style={tableCellStyle}>
                                     {expense.expenseAmount} €
                                 </TableCell>
-                                <TableCell style={tableCellStyle}><RemoveRedEyeIcon /></TableCell>
+                                <TableCell style={tableCellStyle}><MenuIcon /></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

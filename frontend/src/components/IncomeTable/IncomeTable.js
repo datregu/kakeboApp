@@ -21,6 +21,7 @@ import {
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import MenuIcon from '@mui/icons-material/Menu';
 import ModalWindowUpdateIncome from "../../components/ModalWindowUpdateIncome/ModalWindowUpdateIncome";
 import { Box } from "@mui/material";
 import MoneyWidget from "../../components/MoneyWidget/MoneyWidget";
@@ -181,10 +182,11 @@ function IncomeTable({
                 <Table size="small">
                     <TableHead className="table-head">
                         <TableRow>
-                            <TableCell sx={tableHeadStyle}>Fecha</TableCell>
-                            <TableCell sx={tableHeadStyle}>Cantidad</TableCell>
-                            <TableCell sx={tableHeadStyle}>Descripción</TableCell>
-                            <TableCell sx={{ ...tableHeadStyle, verticalAlign: "center" }}></TableCell>
+                            <TableCell sx={tableHeadStyle} className="shantell-sans-fontHeadTable">Fecha</TableCell>
+                            <TableCell sx={tableHeadStyle} className="shantell-sans-fontHeadTable">Descripción</TableCell>
+                            <TableCell sx={tableHeadStyle} className="shantell-sans-fontHeadTable">Cantidad</TableCell>
+                            <TableCell sx={{ ...tableHeadStyle, verticalAlign: "center" }} className="shantell-sans-fontHeadTable"></TableCell>
+                            <TableCell sx={tableHeadStyle} className="shantell-sans-fontHeadTable"></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -207,18 +209,24 @@ function IncomeTable({
                                         align="right"
                                         style={tableCellStyle}
                                     >
-                                        {income.incomeAmount}
-                                    </TableCell>
-                                    <TableCell
-                                        align="right"
-                                        style={tableCellStyle}
-                                    >
                                         {income.incomeDescription}
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={tableCellStyle}
+                                    >
+                                          {income.incomeAmount}
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        style={tableCellStyle}
                                     ></TableCell>
+                                    <TableCell
+                                        align="right"
+                                        style={tableCellStyle}
+                                    >
+                                        <MenuIcon/>
+                                        </TableCell>
                                 </TableRow>
                             ))}
                     </TableBody>

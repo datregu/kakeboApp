@@ -34,11 +34,16 @@ public class MonthlyRecordController {
         BigDecimal desiredSavings = new BigDecimal(body.get("desiredSavings"));
         return monthlyRecordService.addMonthlyRecord(userId, desiredSavings);
     }
-@GetMapping("/getLatestMonthlyRecord/{userId}")
-public MonthlyRecordEntity getLatestMonthlyRecord(@PathVariable Integer userId) {
-    return monthlyRecordService.getLatestMonthlyRecordByUserId(userId);
-}
 
+    @GetMapping("/getLatestMonthlyRecord/{userId}")
+    public MonthlyRecordEntity getLatestMonthlyRecord(@PathVariable Integer userId) {
+        return monthlyRecordService.getLatestMonthlyRecordByUserId(userId);
+    }
+
+    @GetMapping("/getLatestMonthlyRecordv2/{userId}")
+public MonthlyRecordEntity getLatestMonthlyRecordv2(@PathVariable Integer userId) {
+    return monthlyRecordService.getLatestMonthlyRecordv2(userId);
+}
 
 }
 

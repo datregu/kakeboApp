@@ -1,129 +1,106 @@
 import React, { useEffect, useRef } from "react";
-import { Box } from "@mui/material";
+import { Box, Paper, Typography, Divider } from "@mui/material";
 import { Chart, registerables } from "chart.js";
-import style from "./MonthlyRecord.css";
+
+// Registrar los complementos necesarios para el gráfico
 Chart.register(...registerables);
 
 function MonthlyRecord({ record }) {
-  const chartRef = useRef(null);
+    const chartRef = useRef(null);
 
-  useEffect(() => {
-    if (!record || record.total_income === 0) {
-      return;
+    useEffect(() => {
+        if (!record || isNaN(record.total_income) || record.total_income === 0 || record.total_expense === 0) {
+            return;
+        }
+
+        const percentages = [
+            'total_culture_expenses',
+            'total_survival_expenses',
+            'total_leisure_expenses',
+            'total_extras_expenses'
+        ].map(key => ((record[key] / record.total_expense) * 100).toFixed(2));
+
+        const chart = new Chart(chartRef.current, {
+            type: "doughnut",
+            data: {
+                labels: ["Cultura", "Supervivencia", "Ocio y vicio", "Extras"],
+                datasets: [{
+                    data: percentages,
+                    backgroundColor: ["#06d6a0", "#ffd166", "#118ab2", "#ef476f"],
+                }],
+            },
+            options: {
+                responsive: true,
+            },
+        });
+
+        return () => {
+            chart.destroy();
+        };
+    }, [record]);
+
+    if (!record || isNaN(record.total_income)) {
+        return <Box>Aún no has hecho ningún ingreso</Box>;
     }
 
-    const chart = new Chart(chartRef.current, {
-      type: "doughnut",
-      data: {
-        labels: ["Cultura", "Supervivencia", "Ocio", "Extras"],
-        datasets: [
-          {
-            data: [
-              record.total_culture_expenses,
-              record.total_survival_expenses,
-              record.total_leisure_expenses,
-              record.total_extras_expenses,
-            ],
-            backgroundColor: ["#06d6a0", "#ffd166", "#118ab2", "#ef476f"],
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-      },
-    });
+    const savingsActualState = record.desired_savings + (record.total_income - record.fixed_expenses - record.desired_savings - record.total_expense);
 
-    return () => {
-      chart.destroy();
-    };
-  }, [record]);
+    function renderBiggestCategoryExpense() {
+        const maxExpense = findBiggestCategoryExpense();
+        const category = maxExpense.type;
+        const amount = maxExpense.amount;
+        let message = "";
+        let color = "";
+        switch (category) {
+            case 'Extras':
+                message = "Los extras están bien, pero no cuando eclipsan lo esencial. ¡Tiempo de reajustar! 🛑";
+                color = '#ef476f';
+                break;
+            case 'Cultura':
+                message = "La cultura es importante, pero no más que tu bienestar. ¡Revisa tus gastos! 📚";
+                color = '#06d6a0';
+                break;
+            case 'Supervivencia':
+                message = "Bien hecho, priorizar la supervivencia es el primer paso hacia la sabiduría financiera. 👍";
+                color = '#ffd166';
+                break;
+            case 'Ocio':
+                message = "Tanto gasto en ocio y vicio... espero que al menos estés acumulando puntos de felicidad. 😄";
+                color = '#118ab2';
+                break;
+            default:
+                message = "Revisa tus gastos, algo podría estar desbalanceado. 🤔";
+                break;
+        }
+        return <Typography variant="h6" sx={{ color }}>{`Mayor tipo de Gasto: ${category}. ${message}`}</Typography>;
+    }
 
-  if (!record || record.total_income === NaN) {
-    return <Box>Aún no has hecho ningún ingreso</Box>;
-  }
+    function findBiggestCategoryExpense() {
+        const expenses = [
+            { type: 'Cultura', amount: record.total_culture_expenses },
+            { type: 'Supervivencia', amount: record.total_survival_expenses },
+            { type: 'Ocio', amount: record.total_leisure_expenses },
+            { type: 'Extras', amount: record.total_extras_expenses }
+        ];
+        return expenses.reduce((prev, current) => (prev.amount > current.amount) ? prev : current);
+    }
 
-  const culturePercentage = (
-    (record.total_culture_expenses / record.total_expense) *
-    100
-  ).toFixed(2);
-  const survivalPercentage = (
-    (record.total_survival_expenses / record.total_expense) *
-    100
-  ).toFixed(2);
-  const leisurePercentage = (
-    (record.total_leisure_expenses / record.total_expense) *
-    100
-  ).toFixed(2);
-  const extrasPercentage = (
-    (record.total_extras_expenses / record.total_expense) *
-    100
-  ).toFixed(2);
-
-  return (
-    <Box className="information">
-      <div>Has ganado {record.total_income} €</div>
-      <div>Has tenido unos gastos fijos de {record.fixed_expenses} €</div>
-      <b>Te has propuesto ahorrar: {record.desired_savings}</b>
-      <div>
-        Presupuesto para gastar este mes:{" "}
-        {record.total_income - record.fixed_expenses - record.desired_savings} €
-      </div>
-
-      <div>Gasto total: {record.total_expense} € (sin fixed)</div>
-      <div>
-        De tu presupuestos mensual de{" "}
-        {record.total_income - record.fixed_expenses - record.desired_savings}{" "}
-        €, te queda ya{" "}
-        <b>
-          {record.total_income -
-            record.fixed_expenses -
-            record.desired_savings -
-            record.total_expense}{" "}
-          €
-        </b>
-      </div>
-      <div>
-        Este mes querías ahorrar {record.desired_savings} €, si acabas el mes
-        sin más gastos ahorrarás{" "}
-        <b>
-          {record.desired_savings +
-            (record.total_income -
-              record.fixed_expenses -
-              record.desired_savings -
-              record.total_expense)}{" "}
-          €
-        </b>
-        .
-      </div>
-      <br />
-      <Box
-        style={{
-          width: "300px",
-          height: "300px",
-        }}
-      >
-        {/* <div>
-          Gasto en Cultura: {record.total_culture_expenses} € (
-          {culturePercentage}%)
-        </div>
-        <div>
-          Gasto en Supervivencia: {record.total_survival_expenses} € (
-          {survivalPercentage}%)
-        </div>
-        <div>
-          Gasto en Ocio: {record.total_leisure_expenses} € ({leisurePercentage}
-          %)
-        </div>
-        <div>
-          Gasto en Extras: {record.total_extras_expenses} € ({extrasPercentage}
-          %)
-        </div>*/}
-        <Box>
-          <canvas ref={chartRef} style={{ width: "100%", height: "100%" }} />
-        </Box>
-      </Box>
-    </Box>
-  );
+    return (
+        <>
+            <Box className="information" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Box>
+                    <canvas ref={chartRef} />
+                </Box>
+                <Paper elevation={3} sx={{ padding: 2, borderRadius: '10px', backgroundColor: '#f5f5f5', textAlign: 'center', width: "40%" }}>
+                    <Typography variant="h6">
+                        {savingsActualState > record.desired_savings ? `Este mes quieres ahorrar ${record.desired_savings} €, si acabas el mes sin más gastos tu ahorro será incluso mayor, unos ${savingsActualState} € ¡Genial! 👏` : `Te habías propuesto ahorrar ${record.desired_savings} €, pero parece que has gastado más de lo previsto. ¡Controla más tus gastos el próximo mes! 🤔`}
+                    </Typography>
+                    <Divider sx={{ width: '100%', height: '2px', bgcolor: 'primary.main', my: 2 }} />
+                    {renderBiggestCategoryExpense()}
+                </Paper>
+            </Box>
+        </>
+    );
 }
 
 export default MonthlyRecord;
