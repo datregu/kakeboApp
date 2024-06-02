@@ -1,18 +1,18 @@
 .table-head {
-    background-color: #073b4c;
+  background-color: #073b4c;
 }
-.incomeResume{
-    background-color: #a3966a;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+.incomeResume {
+  background-color: #a3966a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .shantell-sans-fontHeadTable {
-    font-family: "Shantell Sans", cursive !important;
-    font-optical-sizing: auto !important;
-    font-weight: 300 !important;
-    font-style: normal !important;
-    font-variation-settings:
-            "BNCE" 0,
-            "INFM" 0,
-            "SPAC" 0;
+  font-family: "Shantell Sans", cursive !important;
+  font-optical-sizing: auto !important;
+  font-weight: 300 !important;
+  font-style: normal !important;
+  font-variation-settings:
+    "BNCE" 0,
+    "INFM" 0,
+    "SPAC" 0;
 }

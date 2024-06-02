@@ -1,48 +1,48 @@
 .money-widget {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 0.5rem 1rem;
-    background-color: #a3966a; /* Color verde para resaltar */
-    color: white;
-    font-size: 1rem; /* Tamaño de fuente */
-   /* Sombra para darle profundidad */
-    width: 100%; /* Ocupa todo el ancho del contenedor */
-    border-radius: 0; /* Sin bordes redondeados */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.5rem 1rem;
+  background-color: #a3966a; /* Color verde para resaltar */
+  color: white;
+  font-size: 1rem; /* Tamaño de fuente */
+  /* Sombra para darle profundidad */
+  width: 100%; /* Ocupa todo el ancho del contenedor */
+  border-radius: 0; /* Sin bordes redondeados */
 }
 
 .label {
-    font-size: 1rem; /* Tamaño más pequeño para el texto 'Total:' */
-    margin-right: 1rem; /* Separación del número */
+  font-size: 1rem; /* Tamaño más pequeño para el texto 'Total:' */
+  margin-right: 1rem; /* Separación del número */
 }
 
 .amount-display {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .currency {
-    margin-left: 0.2rem;
+  margin-left: 0.2rem;
 }
 
 .amount {
-    position: relative;
-    color: white;
-    text-shadow:
-            0 0 8px rgba(255, 255, 255, 0.7),
-            0 0 16px rgba(255, 255, 255, 0.5);
+  position: relative;
+  color: white;
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.7),
+    0 0 16px rgba(255, 255, 255, 0.5);
 }
 
 @keyframes glow {
-    from {
-        text-shadow:
-                0 0 8px rgba(255, 255, 255, 0.7),
-                0 0 16px rgba(255, 255, 255, 0.5);
-    }
-    to {
-        text-shadow:
-                0 0 16px rgba(255, 255, 255, 1),
-                0 0 32px rgba(255, 255, 255, 0.7);
-    }
+  from {
+    text-shadow:
+      0 0 8px rgba(255, 255, 255, 0.7),
+      0 0 16px rgba(255, 255, 255, 0.5);
+  }
+  to {
+    text-shadow:
+      0 0 16px rgba(255, 255, 255, 1),
+      0 0 32px rgba(255, 255, 255, 0.7);
+  }
 }
