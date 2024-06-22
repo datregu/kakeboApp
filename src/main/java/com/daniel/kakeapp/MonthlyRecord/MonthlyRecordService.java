@@ -21,20 +21,20 @@ public class MonthlyRecordService {
     private final UserRepository userRepo;
 
     public void setDesiredSavings(int userId, int month, int year, BigDecimal desiredSavings) {
-    // Buscar el registro mensual para el usuario, mes y año dados
-    MonthlyRecordEntity monthlyRecord = monthlyRecordRepo.findByUserAndMonthAndYear(userId, month, year);
+        // Buscar el registro mensual para el usuario, mes y año dados
+        MonthlyRecordEntity monthlyRecord = monthlyRecordRepo.findByUserAndMonthAndYear(userId, month, year);
 
-    // Si el registro mensual no existe, lanzar una excepción
-    if (monthlyRecord == null) {
-        throw new IllegalArgumentException("No se encontró un registro mensual para el usuario, mes y año dados");
+        // Si el registro mensual no existe, lanzar una excepción
+        if (monthlyRecord == null) {
+            throw new IllegalArgumentException("No se encontró un registro mensual para el usuario, mes y año dados");
+        }
+
+        // Establecer el valor de desired_savings
+        monthlyRecord.setDesired_savings(desiredSavings);
+
+        // Guardar el registro mensual actualizado en la base de datos
+        monthlyRecordRepo.save(monthlyRecord);
     }
-
-    // Establecer el valor de desired_savings
-    monthlyRecord.setDesired_savings(desiredSavings);
-
-    // Guardar el registro mensual actualizado en la base de datos
-    monthlyRecordRepo.save(monthlyRecord);
-}
 
     public MonthlyRecordEntity addMonthlyRecord(Integer userId, BigDecimal desiredSavings) {
         // Obtener el total de ingresos para el mes actual
@@ -52,7 +52,6 @@ public class MonthlyRecordService {
         monthlyRecord.setYear(LocalDate.now().getYear());
         monthlyRecord.setDesired_savings(desiredSavings);
         monthlyRecord.setTotal_income(totalIncome);
-        // Aquí puedes agregar el código para calcular y establecer los otros campos
 
         // Guardar el registro mensual en la base de datos
         monthlyRecordRepo.save(monthlyRecord);
@@ -61,48 +60,48 @@ public class MonthlyRecordService {
     }
 
     public MonthlyRecordEntity getLatestMonthlyRecord(Integer userId) {
-    // Obtener el mes y el año actuales
-    int currentMonth = LocalDate.now().getMonthValue();
-    int currentYear = LocalDate.now().getYear();
+        // Obtener el mes y el año actuales
+        int currentMonth = LocalDate.now().getMonthValue();
+        int currentYear = LocalDate.now().getYear();
 
-    // Buscar el registro mensual más reciente para el usuario dado
-    MonthlyRecordEntity monthlyRecord = monthlyRecordRepo.findByUserAndMonthAndYear(userId, currentMonth, currentYear);
+        // Buscar el registro mensual más reciente para el usuario dado
+        MonthlyRecordEntity monthlyRecord = monthlyRecordRepo.findByUserAndMonthAndYear(userId, currentMonth, currentYear);
 
-    // Si el registro mensual no existe, lanzar una excepción
-    if (monthlyRecord == null) {
-        throw new IllegalArgumentException("No se encontró un registro mensual para el usuario y el mes actual");
-    }
-    // Actualizar fixed_expenses
-    monthlyRecord.setFixed_expenses(expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.FIXED).orElse(BigDecimal.ZERO));
+        // Si el registro mensual no existe, lanzar una excepción
+        if (monthlyRecord == null) {
+            throw new IllegalArgumentException("No se encontró un registro mensual para el usuario y el mes actual");
+        }
+        // Actualizar fixed_expenses
+        monthlyRecord.setFixed_expenses(expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.FIXED).orElse(BigDecimal.ZERO));
 
-    // Actualizar los campos del registro mensual con los datos de las tablas Income y Expense
-    monthlyRecord.setTotal_income(incomeRepo.findTotalIncomesByLastMonth(userId).orElse(BigDecimal.ZERO));
+        // Actualizar los campos del registro mensual con los datos de las tablas Income y Expense
+        monthlyRecord.setTotal_income(incomeRepo.findTotalIncomesByLastMonth(userId).orElse(BigDecimal.ZERO));
 
 
-    //Guardar los gastos por categoria
+        //Guardar los gastos por categoria
         BigDecimal totalCultureExpenses = expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.CULTURA).orElse(BigDecimal.ZERO);
         BigDecimal totalSurvivalExpenses = expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.SUPERVIVENCIA).orElse(BigDecimal.ZERO);
         BigDecimal totalLeisureExpenses = expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.OCIO_Y_VICIO).orElse(BigDecimal.ZERO);
         BigDecimal totalExtrasExpenses = expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.EXTRAS).orElse(BigDecimal.ZERO);
 
-    //Actualizar los campos de los gastos por categoria
-    monthlyRecord.setTotal_culture_expenses(totalCultureExpenses);
-    monthlyRecord.setTotal_survival_expenses(totalSurvivalExpenses);
-    monthlyRecord.setTotal_leisure_expenses(totalLeisureExpenses);
-    monthlyRecord.setTotal_extras_expenses(totalExtrasExpenses);
+        //Actualizar los campos de los gastos por categoria
+        monthlyRecord.setTotal_culture_expenses(totalCultureExpenses);
+        monthlyRecord.setTotal_survival_expenses(totalSurvivalExpenses);
+        monthlyRecord.setTotal_leisure_expenses(totalLeisureExpenses);
+        monthlyRecord.setTotal_extras_expenses(totalExtrasExpenses);
 
-    // Calcular el total de ahorros real_savings
+        // Calcular el total de ahorros real_savings
         BigDecimal total_expenses = totalCultureExpenses.add(totalSurvivalExpenses).add(totalLeisureExpenses).add(totalExtrasExpenses);
         monthlyRecord.setTotal_expense(total_expenses);
 
         BigDecimal realSavings = monthlyRecord.getTotal_income().subtract(total_expenses);
-    monthlyRecord.setReal_savings(realSavings);
+        monthlyRecord.setReal_savings(realSavings);
 
-    // Guardar el registro mensual actualizado en la base de datos
-    monthlyRecordRepo.save(monthlyRecord);
+        // Guardar el registro mensual actualizado en la base de datos
+        monthlyRecordRepo.save(monthlyRecord);
 
-    return monthlyRecord;
-}
+        return monthlyRecord;
+    }
 
     public List<MonthlyRecordEntity> getAllMonthlyRecordsByUserId(Integer userId) {
         return monthlyRecordRepo.findAllByUserId(userId);
@@ -159,51 +158,52 @@ public void setFixedExpenses (int userId, int month, int year, BigDecimal fixedE
     monthlyRecordRepo.save(monthlyRecord);
 
 }*/
-public MonthlyRecordEntity getLatestMonthlyRecordByUserId(Integer userId) {
-    List<MonthlyRecordEntity> records = monthlyRecordRepo.findLatestMonthlyRecordByUserId(userId);
-    if (records.isEmpty()) {
-        throw new IllegalArgumentException("No se encontró un registro mensual para el usuario dado");
-    }
-    return records.get(0);
-}
 
-public MonthlyRecordEntity getLatestMonthlyRecordv2(Integer userId) {
-    // Obtener el mes y el año actuales
-    int currentMonth = LocalDate.now().getMonthValue();
-    int currentYear = LocalDate.now().getYear();
-
-    // Buscar el registro mensual más reciente para el usuario dado
-    MonthlyRecordEntity monthlyRecord = monthlyRecordRepo.findByUserAndMonthAndYear(userId, currentMonth, currentYear);
-
-    // Si el registro mensual no existe para el mes actual, crear uno nuevo
-    if (monthlyRecord == null) {
-        monthlyRecord = new MonthlyRecordEntity();
-        monthlyRecord.setUser(userRepo.findById(userId).orElse(null));
-        monthlyRecord.setMonth(currentMonth);
-        monthlyRecord.setYear(currentYear);
-        monthlyRecord.setFixed_expenses(BigDecimal.ZERO);
-        monthlyRecord.setDesired_savings(BigDecimal.ZERO);
-        monthlyRecord.setReal_savings(BigDecimal.ZERO);
+    public MonthlyRecordEntity getLatestMonthlyRecordByUserId(Integer userId) {
+        List<MonthlyRecordEntity> records = monthlyRecordRepo.findLatestMonthlyRecordByUserId(userId);
+        if (records.isEmpty()) {
+            throw new IllegalArgumentException("No se encontró un registro mensual para el usuario dado");
+        }
+        return records.get(0);
     }
 
-    // Actualizar los campos del registro mensual con los datos de las tablas Income y Expense
-    monthlyRecord.setTotal_income(incomeRepo.findTotalIncomesByLastMonth(userId).orElse(BigDecimal.ZERO));
-    monthlyRecord.setTotal_expense(expenseRepo.findTotalExpensesByLastMonth(userId).orElse(BigDecimal.ZERO));
+    public MonthlyRecordEntity getLatestMonthlyRecordv2(Integer userId) {
+        // Obtener el mes y el año actuales
+        int currentMonth = LocalDate.now().getMonthValue();
+        int currentYear = LocalDate.now().getYear();
 
-    //Actualizar los campos de los gastos por categoria
-    monthlyRecord.setTotal_culture_expenses(expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.CULTURA).orElse(BigDecimal.ZERO));
-    monthlyRecord.setTotal_survival_expenses(expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.SUPERVIVENCIA).orElse(BigDecimal.ZERO));
-    monthlyRecord.setTotal_leisure_expenses(expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.OCIO_Y_VICIO).orElse(BigDecimal.ZERO));
-    monthlyRecord.setTotal_extras_expenses(expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.EXTRAS).orElse(BigDecimal.ZERO));
+        // Buscar el registro mensual más reciente para el usuario dado
+        MonthlyRecordEntity monthlyRecord = monthlyRecordRepo.findByUserAndMonthAndYear(userId, currentMonth, currentYear);
 
-    // Calcular el total de ahorros real_savings
-    BigDecimal realSavings = monthlyRecord.getTotal_income().subtract(monthlyRecord.getTotal_expense());
-    monthlyRecord.setReal_savings(realSavings);
+        // Si el registro mensual no existe para el mes actual, crear uno nuevo
+        if (monthlyRecord == null) {
+            monthlyRecord = new MonthlyRecordEntity();
+            monthlyRecord.setUser(userRepo.findById(userId).orElse(null));
+            monthlyRecord.setMonth(currentMonth);
+            monthlyRecord.setYear(currentYear);
+            monthlyRecord.setFixed_expenses(BigDecimal.ZERO);
+            monthlyRecord.setDesired_savings(BigDecimal.ZERO);
+            monthlyRecord.setReal_savings(BigDecimal.ZERO);
+        }
 
-    // Guardar el registro mensual actualizado en la base de datos
-    monthlyRecordRepo.save(monthlyRecord);
+        // Actualizar los campos del registro mensual con los datos de las tablas Income y Expense
+        monthlyRecord.setTotal_income(incomeRepo.findTotalIncomesByLastMonth(userId).orElse(BigDecimal.ZERO));
+        monthlyRecord.setTotal_expense(expenseRepo.findTotalExpensesByLastMonth(userId).orElse(BigDecimal.ZERO));
 
-    return monthlyRecord;
-}
+        //Actualizar los campos de los gastos por categoria
+        monthlyRecord.setTotal_culture_expenses(expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.CULTURA).orElse(BigDecimal.ZERO));
+        monthlyRecord.setTotal_survival_expenses(expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.SUPERVIVENCIA).orElse(BigDecimal.ZERO));
+        monthlyRecord.setTotal_leisure_expenses(expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.OCIO_Y_VICIO).orElse(BigDecimal.ZERO));
+        monthlyRecord.setTotal_extras_expenses(expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, ExpenseCategory.EXTRAS).orElse(BigDecimal.ZERO));
+
+        // Calcular el total de ahorros real_savings
+        BigDecimal realSavings = monthlyRecord.getTotal_income().subtract(monthlyRecord.getTotal_expense());
+        monthlyRecord.setReal_savings(realSavings);
+
+        // Guardar el registro mensual actualizado en la base de datos
+        monthlyRecordRepo.save(monthlyRecord);
+
+        return monthlyRecord;
+    }
 
 }

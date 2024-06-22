@@ -51,8 +51,8 @@ public class IncomeController {
     }
 
     @GetMapping("/incomeListLastMonth/{userId}")
-@ResponseBody
-public List<IncomeEntity> listIncomesLastMonth(@PathVariable Integer userId) {
+    @ResponseBody
+    public List<IncomeEntity> listIncomesLastMonth(@PathVariable Integer userId) {
     return incomeService.listIncomesLastMonth(userId);
 }
 

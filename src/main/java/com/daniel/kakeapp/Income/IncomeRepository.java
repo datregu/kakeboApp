@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface IncomeRepository extends JpaRepository<IncomeEntity, Integer>{
+
     //Método para buscar los ingresos del mes más reciente de un usuario
     @Query("SELECT i FROM IncomeEntity i WHERE i.user.userId = :userId AND MONTH(i.incomeDate) = (SELECT MAX(MONTH(incomeDate)) FROM IncomeEntity i2 WHERE i2.user.userId = :userId)")
     List<IncomeEntity> findIncomesByLatestMonth(@Param("userId") Integer userId);
@@ -26,5 +27,5 @@ public interface IncomeRepository extends JpaRepository<IncomeEntity, Integer>{
 
     // Método para buscar la lista de ingresos del mes más reciente por usuario
     @Query("SELECT i FROM IncomeEntity i WHERE i.user.userId = :userId AND MONTH(i.incomeDate) = (SELECT MONTH(MAX(i.incomeDate)) FROM IncomeEntity i WHERE i.user.userId = :userId)")
-List<IncomeEntity> findIncomesByUserIdAndLastMonth(@Param("userId") Integer userId);
+    List<IncomeEntity> findIncomesByUserIdAndLastMonth(@Param("userId") Integer userId);
 }

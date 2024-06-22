@@ -45,7 +45,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private List<IncomeEntity> incomes;
 
-    //Con esta anotacion, se establece una relación de uno a muchos entre la entidad UserEntity y la entidad IncomeEntity, es decir, un usuario puede tener muchos ingresos.
+    //Con esta anotacion, se establece una relación de uno a muchos entre la entidad UserEntity y la entidad MonthlyRecordEntity, es decir, un usuario puede tener muchos registros mensuales.
     @OneToMany(mappedBy = "user")
     private List<MonthlyRecordEntity> monthlyRecords;
 

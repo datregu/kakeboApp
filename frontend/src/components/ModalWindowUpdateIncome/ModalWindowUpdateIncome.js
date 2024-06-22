@@ -41,12 +41,12 @@ const ModalWindowUpdateIncome = ({
       !incomeData.incomeDate ||
       !incomeData.incomeDescription
     ) {
-      alert("Please fill in all fields");
+      alert("Rellena todos los campos");
       return;
     }
 
     if (isNaN(incomeData.incomeAmount)) {
-      alert("Income amount must be a number");
+      alert("La cantidad debe ser un número");
       return;
     }
 
@@ -83,7 +83,7 @@ const ModalWindowUpdateIncome = ({
             return text ? JSON.parse(text) : {};
           });
         } else {
-          throw new Error("Network response was not ok.");
+          throw new Error("La respuesta no fue OK.");
         }
       })
       .then((data) => {

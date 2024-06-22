@@ -17,7 +17,7 @@ public class ExpenseService {
     private final ExpenseRepository expenseRepo;
     private final UserRepository userRepo;
 
-    /* Método para crear un gasto en la base de datos */
+    // Método para crear un gasto para un usuario
     public void createExpense(ExpenseEntity expenseEntity, Integer userId) {
         UserEntity user = userRepo.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("No se encuentra el usuario con el ID proporcionado"));
@@ -25,7 +25,7 @@ public class ExpenseService {
         expenseRepo.save(expenseEntity);
     }
 
-    /* Método para actualizar un gasto en la base de datos por su ID */
+    // Método para actualizar un gasto por su ID
     public void updateExpense(Integer expenseId, ExpenseEntity expenseEntity) {
         if (expenseRepo.existsById(expenseId)) {
             ExpenseEntity existingExpense = expenseRepo.findById(expenseId)
@@ -42,14 +42,15 @@ public class ExpenseService {
         }
     }
 
-    /* Método para listar todos los gastos en la base de datos */
+    // Método para listar los gastos de un usuario
     public List<ExpenseEntity> listExpenses(Integer userId) {
         UserEntity user = userRepo.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("No se encuentra el usuario con el ID proporcionado"));
         return expenseRepo.findByUser(user);
     }
-/* Método para listar todos los gastos en la base de datos EXCEPTO LOS FIXED */
-public List<ExpenseEntity> listExpensesExcludeFixed(Integer userId) {
+
+    // Método para listar los gastos excluyendo los gastos fijos
+    public List<ExpenseEntity> listExpensesExcludeFixed(Integer userId) {
     UserEntity user = userRepo.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("No se encuentra el usuario con el ID proporcionado"));
     List<ExpenseEntity> expenses = expenseRepo.findByUser(user);
@@ -57,7 +58,7 @@ public List<ExpenseEntity> listExpensesExcludeFixed(Integer userId) {
     return expenses;
 }
 
-    /* Método para eliminar un gasto en la base de datos por su ID */
+   // Método para borrar un gasto por su ID
     public void deleteExpense(Integer expenseId) {
         if (expenseRepo.existsById(expenseId)) {
             expenseRepo.deleteById(expenseId);
@@ -66,6 +67,7 @@ public List<ExpenseEntity> listExpensesExcludeFixed(Integer userId) {
         }
     }
 
+    // Método para listar los gastos fijos del mes pasado por usuario
     public List<ExpenseEntity> listExpensesOnlyFixedLastMonth(Integer userId) {
         UserEntity user = userRepo.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("No se encuentra el usuario con el ID proporcionado"));
@@ -76,9 +78,7 @@ public List<ExpenseEntity> listExpensesExcludeFixed(Integer userId) {
         return expenses;
     }
 
-    /* Método para buscar por expenseCategory
-     * Como este método no viene incluido de serie en expenseRepo, se debe crear un método en el repositorio
-     *  */
+    // Método para buscar lista de gastos por categoria, se le pasa la categoría como parámetro
     public List<ExpenseEntity> findExpensesByCategory(ExpenseCategory category) {
         List<ExpenseEntity> resultByCategory = expenseRepo.findByExpenseCategory(category);
         if (resultByCategory.isEmpty()) {
@@ -109,20 +109,22 @@ public List<ExpenseEntity> listExpensesExcludeFixed(Integer userId) {
         }
     }
 
+    // Método para buscar el total de gastos del mes más reciente por usuario
     public BigDecimal findTotalExpensesByLastMonth(Integer userId) {
         return expenseRepo.findTotalExpensesByLastMonth(userId).orElse(BigDecimal.ZERO);
     }
 
-
+    // Método para buscar el total de una categoria de gastos del mes más reciente por usuario
     public BigDecimal findTotalExpensesByCategoryAndLastMonth(Integer userId, ExpenseCategory category) {
         return expenseRepo.findTotalExpensesByCategoryAndLastMonth(userId, category).orElse(BigDecimal.ZERO);
     }
 
+    // Método para buscar el total de gastos fijos del mes más reciente por usuario
     public BigDecimal findTotalFixedExpensesByLastMonth(Integer userId) {
         return expenseRepo.findTotalFixedExpensesByLastMonth(userId).orElse(BigDecimal.ZERO);
     }
 
-
+    // Método para buscar la lista de gastos de un usuario del mes más reciente
     public List<ExpenseEntity> listExpensesExcludeFixedLastMonth(Integer userId) {
     List<ExpenseEntity> expenses = expenseRepo.findExpensesByUserIdAndLastMonth(userId);
     expenses.removeIf(expense -> expense.getExpenseCategory() == ExpenseCategory.FIXED);

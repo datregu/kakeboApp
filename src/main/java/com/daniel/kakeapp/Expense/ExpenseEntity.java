@@ -18,6 +18,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 
+//Clase que representa la entidad de un Gasto
 public class ExpenseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +26,6 @@ public class ExpenseEntity {
 
     @Column
     private BigDecimal expenseAmount;
-
 
     //Por defecto, cuando se quiera pasar una fecha a través de un JSON, se puede hacer en formato "dd-MM-yyyy"
     @Column
@@ -40,12 +40,10 @@ public class ExpenseEntity {
     @Enumerated(EnumType.STRING)
     private ExpenseCategory expenseCategory;
 
- @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "id_user_expense", referencedColumnName = "user_id")
- @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
- @JsonIdentityReference(alwaysAsId = true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
+    @JsonIdentityReference(alwaysAsId = true)
     private UserEntity user;
-
-
-}
+    }
 

@@ -1,4 +1,5 @@
 package com.daniel.kakeapp.User;
+
 import com.daniel.kakeapp.User.UserEntity;
 import com.daniel.kakeapp.User.UserRepository;
 import com.daniel.kakeapp.User.UserService;
@@ -25,6 +26,7 @@ public class UserServiceTest {
     private UserRepository userRepository;
 
     private UserEntity userEntity;
+
     // Método para inicializar los mocks
     @BeforeEach
     public void setUp() {
@@ -33,21 +35,24 @@ public class UserServiceTest {
         userEntity.setUserEmail("testEmail");
         userEntity.setUserPassword("testPassword");
     }
-// Test para comprobar quen  el método loginUser devuelve un código 200 cuando el usuario existe
+
+    // Test para comprobar que  el método loginUser devuelve un código 200 cuando el usuario existe
     @Test
     public void loginUserReturnsOkWhenUserExists() {
         when(userRepository.findByUserEmailAndUserPassword(any(String.class), any(String.class))).thenReturn(userEntity);
         ResponseEntity<?> response = userService.loginUser(userEntity);
         assertEquals(200, response.getStatusCodeValue());
     }
-// Test para comprobar que el método loginUser devuelve un código 400 cuando el usuario no existe
+
+    // Test para comprobar que el método loginUser devuelve un código 400 cuando el usuario no existe
     @Test
     public void loginUserReturnsBadRequestWhenUserDoesNotExist() {
         when(userRepository.findByUserEmailAndUserPassword(any(String.class), any(String.class))).thenReturn(null);
         ResponseEntity<?> response = userService.loginUser(userEntity);
         assertEquals(400, response.getStatusCodeValue());
     }
-// Test para comprobar que el método createUser guarda un usuario con los miembros de la familia
+
+    // Test para comprobar que el método createUser guarda un usuario con los miembros de la familia
     @Test
     public void createUserSavesUserWithFamilyMembers() {
         List<String> familyMembers = Arrays.asList("John", "Jane");

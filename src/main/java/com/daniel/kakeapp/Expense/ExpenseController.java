@@ -15,6 +15,7 @@ import java.util.List;
 public class ExpenseController {
     private ExpenseService expenseService;
 
+    //Constructor de la clase
     @Autowired
     public ExpenseController(ExpenseService expenseService) {
         this.expenseService = expenseService;
@@ -86,18 +87,19 @@ public class ExpenseController {
         return expenseService.findTotalFixedExpensesByLastMonth(userId);
     }
 
-@GetMapping("/lastMonthExpenseList/{userId}")
-@ResponseBody
-public List<ExpenseEntity> listExpensesExcludeFixedLastMonth(@PathVariable Integer userId) {
+    // Devuelve la lista de gastos del ultimo mes
+    @GetMapping("/lastMonthExpenseList/{userId}")
+    @ResponseBody
+    public List<ExpenseEntity> listExpensesExcludeFixedLastMonth(@PathVariable Integer userId) {
     return expenseService.listExpensesExcludeFixedLastMonth(userId);
-}
+    }
 
-
-@GetMapping("/fixedExpenseListLastMonth/{userId}")
-@ResponseBody
-public List<ExpenseEntity> listFixedExpensesLastMonth(@PathVariable Integer userId) {
+    // Devuelve la lista de gastos FIJOS del ultimo mes
+    @GetMapping("/fixedExpenseListLastMonth/{userId}")
+    @ResponseBody
+    public List<ExpenseEntity> listFixedExpensesLastMonth(@PathVariable Integer userId) {
     return expenseService.listFixedExpensesLastMonth(userId);
-}
+    }
 
 }
 

@@ -45,7 +45,8 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Integer>
     @Query("SELECT e FROM ExpenseEntity e WHERE e.user.userId = :userId AND MONTH(e.expenseDate) = (SELECT MONTH(MAX(e.expenseDate)) FROM ExpenseEntity e WHERE e.user.userId = :userId)")
     List<ExpenseEntity> findExpensesByUserIdAndLastMonth(@Param("userId") Integer userId);
 
+    // Método para buscar la lista de gastos fijos de un usuario del mes más reciente
     @Query("SELECT e FROM ExpenseEntity e WHERE e.user.userId = :userId AND e.expenseCategory = 'FIXED' AND MONTH(e.expenseDate) = (SELECT MONTH(MAX(e.expenseDate)) FROM ExpenseEntity e WHERE e.user.userId = :userId)")
-List<ExpenseEntity> findFixedExpensesByUserIdAndLastMonth(@Param("userId") Integer userId);
+    List<ExpenseEntity> findFixedExpensesByUserIdAndLastMonth(@Param("userId") Integer userId);
 
 }

@@ -9,8 +9,9 @@ import {
 import Login from "./pages/Login/Login";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import UserContext from "./components/UserContext/UserContext";
+import Register from "./pages/Register/Register";
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "./theme"; // Asegúrate de importar tu tema personalizado
+import theme from "./theme";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -22,6 +23,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/register" element={<Register />} />
             <Route
               path="/refresh"
               element={<Navigate replace to="/dashboard" />}

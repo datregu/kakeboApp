@@ -22,7 +22,7 @@ public class IncomeService {
         incomeRepo.save(incomeEntity);
     }
 
-    /* Método para actualizar un gasto en la base de datos por su ID */
+    // Método para actualizar un ingreso en la base de datos
 public void updateIncome(Integer incomeId, IncomeEntity incomeEntity) {
     if (incomeRepo.existsById(incomeId)) {
         IncomeEntity existingIncome = incomeRepo.findById(incomeId)
@@ -66,6 +66,7 @@ public void updateIncome(Integer incomeId, IncomeEntity incomeEntity) {
         return incomeRepo.findTotalIncomesByLastMonth(userId).orElse(BigDecimal.ZERO);
     }
 
+    // Método para buscar la lista de ingresos del mes más reciente por usuario
     public List<IncomeEntity> listIncomesLastMonth(Integer userId) {
     return incomeRepo.findIncomesByUserIdAndLastMonth(userId);
 }

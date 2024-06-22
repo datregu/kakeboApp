@@ -243,16 +243,16 @@ function Dashboard() {
               }}
             >
               <Tab
-                  className="shantell-sans-fontTabs"
+                className="shantell-sans-fontTabs"
                 label="Resumen Personal"
                 sx={{
                   "&.Mui-selected": {
                     color: "#482e1d",
-                },
+                  },
                 }}
               />
               <Tab
-                  className="shantell-sans-fontTabs"
+                className="shantell-sans-fontTabs"
                 label="Resumen Mensual"
                 sx={{
                   "&.Mui-selected": {
@@ -261,7 +261,7 @@ function Dashboard() {
                 }}
               />
               <Tab
-                  className="shantell-sans-fontTabs"
+                className="shantell-sans-fontTabs"
                 label="Resumen Anual"
                 sx={{
                   "&.Mui-selected": {

@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography, Paper, CircularProgress } from "@mui/material";
 
 const PersonalBudgetWidget = ({ amount }) => {
+
   // Constantes y funciones para calcular el presupuesto semanal
   const currentDate = new Date();
   const lastDayOfMonth = new Date(
@@ -28,7 +29,6 @@ const PersonalBudgetWidget = ({ amount }) => {
   }
   const weeklyBudget = calculeWeeklyButget(amount);
 
-
   return (
     <Paper
       elevation={3}
@@ -53,12 +53,14 @@ const PersonalBudgetWidget = ({ amount }) => {
           mt: 2,
         }}
       >
-        <Box sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Typography variant="h5" component="div">
             €{amount.toFixed(2)}
           </Typography>

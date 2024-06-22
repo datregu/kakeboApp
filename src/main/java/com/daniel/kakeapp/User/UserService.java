@@ -10,19 +10,22 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     private final UserRepository userRepo;
 
-        //Método para crear un usuario en la base de datos
-        public void createUser(UserEntity userEntity, List<String> familyMembers) {
-            userEntity.setFamilyMembers(familyMembers);
-            userRepo.save(userEntity);
+    //Método para crear un usuario en la base de datos
+    public void createUser(UserEntity userEntity, List<String> familyMembers) {
+        userEntity.setFamilyMembers(familyMembers);
+        userRepo.save(userEntity);
     }
-   public ResponseEntity<?> loginUser(UserEntity user) {
-    UserEntity existingUser = userRepo.findByUserEmailAndUserPassword(user.getUserEmail(), user.getUserPassword());
-    if (existingUser != null) {
-        return ResponseEntity.ok(existingUser);
-    } else {
-        return ResponseEntity.badRequest().body("Invalid username or password");
+
+    //Método para loguear un usuario
+    public ResponseEntity<?> loginUser(UserEntity user) {
+        UserEntity existingUser = userRepo.findByUserEmailAndUserPassword(user.getUserEmail(), user.getUserPassword());
+        if (existingUser != null) {
+            return ResponseEntity.ok(existingUser);
+        } else {
+            return ResponseEntity.badRequest().body("Nombre o contraseña incorrectos");
+        }
     }
-}
 }

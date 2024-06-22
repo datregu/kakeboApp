@@ -1,0 +1,101 @@
+.
+├── frontend
+│   ├── Dockerfile
+│   ├── node_modules
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── public
+│   ├── README.md
+│   └── src
+├── get-docker.sh
+├── HELP.md
+├── kakeApp.iml
+├── mvnw
+├── mvnw.cmd
+├── node_modules
+│   ├── ansi-styles
+│   ├── @babel
+│   ├── babel-plugin-macros
+│   ├── callsites
+│   ├── chalk
+│   ├── clsx
+│   ├── color-convert
+│   ├── color-name
+│   ├── convert-source-map
+│   ├── cosmiconfig
+│   ├── csstype
+│   ├── css-vendor
+│   ├── dayjs
+│   ├── dom-helpers
+│   ├── @emotion
+│   ├── error-ex
+│   ├── escape-string-regexp
+│   ├── find-root
+│   ├── @floating-ui
+│   ├── function-bind
+│   ├── has-flag
+│   ├── hasown
+│   ├── hoist-non-react-statics
+│   ├── hyphenate-style-name
+│   ├── import-fresh
+│   ├── is-arrayish
+│   ├── is-core-module
+│   ├── is-in-browser
+│   ├── json-parse-even-better-errors
+│   ├── jss
+│   ├── jss-plugin-camel-case
+│   ├── jss-plugin-default-unit
+│   ├── jss-plugin-global
+│   ├── jss-plugin-nested
+│   ├── jss-plugin-props-sort
+│   ├── jss-plugin-rule-value-function
+│   ├── jss-plugin-vendor-prefixer
+│   ├── js-tokens
+│   ├── lines-and-columns
+│   ├── loose-envify
+│   ├── @material-ui
+│   ├── @mui
+│   ├── object-assign
+│   ├── parent-module
+│   ├── parse-json
+│   ├── path-parse
+│   ├── path-type
+│   ├── picocolors
+│   ├── @popperjs
+│   ├── popper.js
+│   ├── prop-types
+│   ├── react
+│   ├── react-dom
+│   ├── react-is
+│   ├── react-transition-group
+│   ├── regenerator-runtime
+│   ├── resolve
+│   ├── resolve-from
+│   ├── scheduler
+│   ├── source-map
+│   ├── stylis
+│   ├── supports-color
+│   ├── supports-preserve-symlinks-flag
+│   ├── tiny-warning
+│   ├── to-fast-properties
+│   ├── @types
+│   └── yaml
+├── output.txt
+├── package.json
+├── package-lock.json
+├── pom.xml
+├── src
+│   ├── main
+│   └── test
+└── target
+    ├── classes
+    ├── generated-sources
+    ├── generated-test-sources
+    ├── kakeApp-0.0.1-SNAPSHOT.jar
+    ├── kakeApp-0.0.1-SNAPSHOT.jar.original
+    ├── maven-archiver
+    ├── maven-status
+    ├── surefire-reports
+    └── test-classes
+
+83 directories, 15 files

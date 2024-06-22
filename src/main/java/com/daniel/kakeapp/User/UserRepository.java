@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
-    //Añadir métodos personalizados
+
+    //Encontrar usuario por email y contraseña
     UserEntity findByUserEmailAndUserPassword(String userEmail, String userPassword);
 }

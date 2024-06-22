@@ -15,9 +15,9 @@ import java.util.List;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
-    //Primero se declara el servicio de usuario
-    private UserService userService;
 
+    //Declarar el servicio de usuario
+    private UserService userService;
 
     //Con autowired se inyecta el servicio de usuario, y se crea un constructor para inicializarlo
     @Autowired
@@ -25,12 +25,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Crear usuario
+    // Método POST para crear usuario
     @PostMapping("/createUser")
     public void createUser(@RequestBody UserEntity userEntity) {
         userService.createUser(userEntity, userEntity.getFamilyMembers());
     }
 
+    // Método POST para loguear usuario
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody UserEntity userEntity) {
         return userService.loginUser(userEntity);
